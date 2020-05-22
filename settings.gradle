@@ -1,0 +1,5 @@
+rootProject.name='MyEpxInPeru'
+include ':app'
+include ':data'
+include ':interactors'
+include ':domain'
