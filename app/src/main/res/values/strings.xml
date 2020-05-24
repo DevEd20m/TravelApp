@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MyEpxInPeru</string>
+    <string name="item_home">Home</string>
+    <string name="item_share">Share</string>
+    <string name="item_profile">Profile</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "956923301933",
+    "firebase_url": "https://myexpinperu.firebaseio.com",
+    "project_id": "myexpinperu",
+    "storage_bucket": "myexpinperu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956923301933:android:d2c6a58d6e62ae9898a8a4",
+        "android_client_info": {
+          "package_name": "com.deved.myepxinperu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "956923301933-dhj9rfaqf7ln5913jlablf7df5mamgqm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deved.myepxinperu",
+            "certificate_hash": "032776971fa436aebf434b36a40656d4fc6454f3"
+          }
+        },
+        {
+          "client_id": "956923301933-7lbf3567hq1s1d1hfoi4iqvettpm0ttk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhhdWwyKN7DxE29Gb9wex_pkkDMCxkcNo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "956923301933-7lbf3567hq1s1d1hfoi4iqvettpm0ttk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

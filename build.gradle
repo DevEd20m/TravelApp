@@ -12,7 +12,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.6.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.3'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.1.0'
+//        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.1.0'
         classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.0.0-RC16"
         classpath 'io.fabric.tools:gradle:1.31.2'
 
@@ -75,7 +75,8 @@ allprojects {
         ]
 
         coroutines = [
-                coroutine: 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5',
+                coroutine         : 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5',
+                supportPlayService: 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
         ]
 
         coil = [
@@ -83,10 +84,11 @@ allprojects {
         ]
 
         firebase = [
-                firebaseAnalytics  : 'com.google.firebase:firebase-analytics:17.4.0',
-                firebaseCrashlytics: 'com.crashlytics.sdk.android:crashlytics:2.10.1',
-                firebaseStorage    : 'com.google.firebase:firebase-storage:19.1.0',
-                firebaseAuth       : 'com.google.firebase:firebase-auth:19.1.0'
+//                firebaseAnalytics  : 'com.google.firebase:firebase-analytics:17.4.0',
+//                firebaseCrashlytics: 'com.crashlytics.sdk.android:crashlytics:2.10.1',
+firebaseStorage: 'com.google.firebase:firebase-storage:19.1.0',
+firebaseAuth   : 'com.google.firebase:firebase-auth:19.1.0',
+firebaseKtx    : 'com.google.firebase:firebase-firestore-ktx:21.4.1'
         ]
 
         room = [
