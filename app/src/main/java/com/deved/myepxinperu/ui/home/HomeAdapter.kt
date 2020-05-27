@@ -39,7 +39,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                     crossfade(true)
                     crossfade(500)
                 }
-                textViewNameMovie.text = places.department
+                textViewNameMovie.text = places.description
             }
         }
     }
