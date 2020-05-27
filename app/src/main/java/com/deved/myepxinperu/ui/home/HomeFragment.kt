@@ -1,7 +1,6 @@
 package com.deved.myepxinperu.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewmodel: HomeViewModel
-    private lateinit var firebaseFirestore : FirebaseFirestore
+    private lateinit var firebaseFirestore: FirebaseFirestore
+    private val adapter by lazy { HomeAdapter() }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,6 +32,10 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.recyclerViewPlaces.adapter = adapter
+    }
     private fun setUpViewModel() {
         viewmodel = getViewModel {
             firebaseFirestore = FirebaseFirestore.getInstance()
@@ -46,8 +51,8 @@ class HomeFragment : Fragment() {
     }
 
     private val placesObserver = Observer<List<Places>> {
-        it?.forEach {places->
-            Log.d(TAG,places.description.toString())
+        it?.let { places ->
+            adapter.places = places
         }
     }
 

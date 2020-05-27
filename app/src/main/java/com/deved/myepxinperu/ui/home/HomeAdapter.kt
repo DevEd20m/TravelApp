@@ -1,5 +1,6 @@
 package com.deved.myepxinperu.ui.home
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,34 +9,35 @@ import com.deved.domain.Places
 import com.deved.myepxinperu.R
 import com.deved.myepxinperu.databinding.ItemPlacesBinding
 import com.deved.myepxinperu.ui.common.basicDiffUtil
-import com.deved.myepxinperu.ui.common.inflate
+import kotlinx.android.synthetic.main.item_places.view.*
 
-class HomeAdapter(items: List<Places> = emptyList()) :
-    RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-    private var places: List<Places> by basicDiffUtil(
-        emptyList(), { old, new -> old.id == new.id }
+    var places: List<Places> by basicDiffUtil(
+        emptyList(), { old, new -> old.department == new.department }
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.ViewHolder {
-        val view = parent.inflate(R.layout.item_places, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_places, parent, false)
         return ViewHolder(view)
     }
 
     override fun getItemCount(): Int = places.size
 
     override fun onBindViewHolder(holder: HomeAdapter.ViewHolder, position: Int) {
-        holder.bin(places[position])
+        holder.bind(places[position])
     }
 
     class ViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
         private val binding = ItemPlacesBinding.bind(view)
 
-        fun bin(places: Places) {
+        fun bind(places: Places) {
             with(binding) {
-                ImageViewBackground.load(places.pictureOne){
+                imageViewBackground.load(places.pictureOne){
                     crossfade(true)
+                    crossfade(500)
                 }
                 textViewNameMovie.text = places.department
             }
