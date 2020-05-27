@@ -1,24 +1,66 @@
 package com.deved.myepxinperu.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import com.deved.myepxinperu.R
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import com.deved.data.repository.PlacesRepository
+import com.deved.domain.Places
+import com.deved.interactors.GetAllPlaces
+import com.deved.myepxinperu.data.server.DataSource
+import com.deved.myepxinperu.databinding.FragmentHomeBinding
+import com.deved.myepxinperu.ui.common.getViewModel
+import com.deved.myepxinperu.ui.common.toast
+import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() {
-
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var viewmodel: HomeViewModel
+    private lateinit var firebaseFirestore : FirebaseFirestore
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        setUpViewModel()
+        attachViewModelObservers()
+        return binding.root
+    }
+
+    private fun setUpViewModel() {
+        viewmodel = getViewModel {
+            firebaseFirestore = FirebaseFirestore.getInstance()
+            val respository = PlacesRepository(DataSource(firebaseFirestore))
+            HomeViewModel(GetAllPlaces(respository))
+        }
+    }
+
+    private fun attachViewModelObservers() {
+        viewmodel.places.observe(viewLifecycleOwner, placesObserver)
+        viewmodel.isViewLoading.observe(viewLifecycleOwner, isViewLoadingObserver)
+        viewmodel.onMessageError.observe(viewLifecycleOwner, onMessageErrorObserver)
+    }
+
+    private val placesObserver = Observer<List<Places>> {
+        it?.forEach {places->
+            Log.d(TAG,places.description.toString())
+        }
+    }
+
+    private val isViewLoadingObserver = Observer<Boolean> {
+        binding.progressBarHome.isVisible = it
+    }
+
+    private val onMessageErrorObserver = Observer<Any> {
+        activity?.toast(it.toString())
     }
 
     companion object {
+        val TAG = HomeFragment::class.java.name
         fun newInstance() = HomeFragment()
     }
 }

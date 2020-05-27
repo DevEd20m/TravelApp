@@ -84,11 +84,9 @@ allprojects {
         ]
 
         firebase = [
-//                firebaseAnalytics  : 'com.google.firebase:firebase-analytics:17.4.0',
-//                firebaseCrashlytics: 'com.crashlytics.sdk.android:crashlytics:2.10.1',
-firebaseStorage: 'com.google.firebase:firebase-storage:19.1.0',
-firebaseAuth   : 'com.google.firebase:firebase-auth:19.1.0',
-firebaseKtx    : 'com.google.firebase:firebase-firestore-ktx:21.4.1'
+                firebaseStorage: 'com.google.firebase:firebase-storage:19.1.0',
+                firebaseAuth   : 'com.google.firebase:firebase-auth:19.1.0',
+                firebaseKtx    : 'com.google.firebase:firebase-firestore-ktx:21.4.1'
         ]
 
         room = [
