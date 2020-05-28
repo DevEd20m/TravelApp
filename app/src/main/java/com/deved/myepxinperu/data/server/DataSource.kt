@@ -1,31 +1,47 @@
 package com.deved.myepxinperu.data.server
 
-import android.util.Log
 import com.deved.data.common.DataResponse
 import com.deved.data.source.RemoteDataSource
 import com.deved.domain.Places
 import com.deved.domain.User
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.tasks.await
 
 data class DataSource(
+    private val firebaseAuth: FirebaseAuth,
+    private val firestore: FirebaseFirestore,
     private val firebaseFirestore: FirebaseFirestore
 ) : RemoteDataSource {
-    override suspend fun logIn(user: String, password: String): DataResponse<User> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//        return try {
-//            firebaseFirestore.collection("Users")
-//            val result = firebaseAuth.currentUser
-//            val user = User(null,result)
-//            return DataResponse.Success(result)
-//        } catch (e: Exception) {
-//            return DataResponse.ExceptionError(e)
-//        }
+    override suspend fun logIn(user: String, password: String): DataResponse<String> {
+        return try {
+            firebaseAuth.signInWithEmailAndPassword(user, password).await()
+            DataResponse.Success("OK")
+        } catch (e: FirebaseAuthException) {
+            DataResponse.ExceptionError(e)
+        } catch (e: Exception) {
+            DataResponse.ExceptionError(e)
+        }
     }
 
-    override suspend fun registerUser(): DataResponse<User> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun registerUser(user:User): DataResponse<String> {
+        return try {
+            firebaseAuth.createUserWithEmailAndPassword(user.email,user.password).await()
+            val userServer = hashMapOf<String,Any>()
+            userServer["email"] = user.email
+            userServer["name"] = user.name
+            userServer["lastName"] = user.lastName
+            firebaseFirestore.collection("Users").document(firebaseAuth.currentUser!!.uid).set(userServer).await()
+            DataResponse.Success("OK")
+        } catch (e: FirebaseAuthException) {
+            DataResponse.ExceptionError(e)
+        } catch (e: FirebaseFirestoreException) {
+            DataResponse.ExceptionError(e)
+        } catch (e: Exception) {
+            DataResponse.ExceptionError(e)
+        }
     }
 
     override suspend fun fetchAllPlaces(): DataResponse<List<Places>> {

@@ -5,7 +5,7 @@ import com.deved.domain.Places
 import com.deved.domain.User
 
 interface RemoteDataSource {
-    suspend fun logIn(user:String, password:String):DataResponse<User>
-    suspend fun registerUser():DataResponse<User>
+    suspend fun logIn(user:String, password:String):DataResponse<String>
+    suspend fun registerUser(user:User):DataResponse<String>
     suspend fun fetchAllPlaces(): DataResponse<List<Places>>
 }

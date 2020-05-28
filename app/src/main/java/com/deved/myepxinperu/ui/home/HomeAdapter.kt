@@ -9,7 +9,6 @@ import com.deved.domain.Places
 import com.deved.myepxinperu.R
 import com.deved.myepxinperu.databinding.ItemPlacesBinding
 import com.deved.myepxinperu.ui.common.basicDiffUtil
-import kotlinx.android.synthetic.main.item_places.view.*
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
