@@ -4,6 +4,8 @@ import com.deved.data.common.DataResponse
 import com.deved.data.source.RemoteDataSource
 import com.deved.domain.Places
 import com.deved.domain.User
+import com.deved.myepxinperu.R
+import com.deved.myepxinperu.ui.common.UiContext
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,7 +19,7 @@ data class DataSource(
     override suspend fun logIn(user: String, password: String): DataResponse<String> {
         return try {
             firebaseAuth.signInWithEmailAndPassword(user, password).await()
-            DataResponse.Success("OK")
+            DataResponse.Success(UiContext.getString(R.string.success_auth))
         } catch (e: FirebaseAuthException) {
             DataResponse.ExceptionError(e)
         } catch (e: Exception) {
@@ -33,7 +35,7 @@ data class DataSource(
             userServer["name"] = user.name
             userServer["lastName"] = user.lastName
             firebaseFirestore.collection("Users").document(firebaseAuth.currentUser!!.uid).set(userServer).await()
-            DataResponse.Success("OK")
+            DataResponse.Success(UiContext.getString(R.string.success_registered_user))
         } catch (e: FirebaseAuthException) {
             DataResponse.ExceptionError(e)
         } catch (e: FirebaseFirestoreException) {
