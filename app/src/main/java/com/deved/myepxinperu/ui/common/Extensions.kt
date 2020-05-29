@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlin.properties.Delegates
 
 @Suppress("UNCHECKED_CAST")
@@ -60,3 +62,37 @@ inline fun <VH : RecyclerView.ViewHolder, T> RecyclerView.Adapter<VH>.basicDiffU
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = true): View =
     LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
+
+fun String.validate():Boolean{
+    if(this.trim().isEmpty()){
+        return false
+    }
+    return true
+}
+
+fun String.validateEmail(value:String):Boolean{
+    if(value.trim().isEmpty()){
+        return false
+    }
+    return true
+}
+
+fun TextInputLayout.validateInput(value: TextInputEditText, message: String): Boolean {
+    this.apply { isErrorEnabled = false }
+    if (value.text.isNullOrEmpty()) {
+        this.apply { error = message; isErrorEnabled = true }
+        return false
+    }
+    return true
+}
+
+fun TextInputLayout.validateInputPasword(password: TextInputEditText,repeatPassword : TextInputEditText, message: String): Boolean {
+    this.apply { isErrorEnabled = false }
+    val password =  password.text?.trim()
+    val newPassword = repeatPassword.text?.trim()
+    if (requireNotNull(password).equals(newPassword)) {
+        this.apply { error = message; isErrorEnabled = true }
+        return false
+    }
+    return true
+}

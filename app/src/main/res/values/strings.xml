@@ -6,4 +6,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="invalidInputName">Ingrese su nombre por favor</string>
+    <string name="invalidInputLastName">Ingrese su Apellido por favor</string>
+    <string name="invalidInputEmail">Ingrese su Email por favor</string>
+    <string name="invalidInputPassword">Ingrese su Contraseña por favor</string>
 </resources>
