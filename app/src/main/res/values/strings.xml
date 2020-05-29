@@ -10,4 +10,6 @@
     <string name="invalidInputLastName">Ingrese su Apellido por favor</string>
     <string name="invalidInputEmail">Ingrese su Email por favor</string>
     <string name="invalidInputPassword">Ingrese su Contraseña por favor</string>
+    <string name="success_registered_user">Usuario creado éxitosamente</string>
+    <string name="success_auth">Usuario autenticado éxitosamente</string>
 </resources>

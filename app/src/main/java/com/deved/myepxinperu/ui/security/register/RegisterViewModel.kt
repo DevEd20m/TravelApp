@@ -19,20 +19,20 @@ class RegisterViewModel(private val registerUser: RegisterUser) : ScopeViewModel
     private var _isViewLoading = MutableLiveData<Boolean>()
     val isViewLoading: LiveData<Boolean> get() = _isViewLoading
 
+    fun validateForRegister(name: String, lastName: String, email: String, password: String) {
+        if (!name.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputName))
+        else if (!lastName.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputLastName))
+        else if (!email.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputEmail))
+        else if (!password.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPassword))
+        else registerUser(User(null, name, lastName, email, password, null))
+    }
+
     private fun registerUser(user: User) {
         launch {
             _isViewLoading.postValue(true)
             doAction(registerUser.invoke(user))
             _isViewLoading.postValue(false)
         }
-    }
-
-    fun validateForRegister(name: String, lastName: String,email: String, password: String) {
-        if (!name.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputName))
-        else if (!lastName.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputLastName))
-        else if (!email.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputEmail))
-        else if (!password.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPassword))
-        else registerUser(User(null,name,lastName,email,password,null))
     }
 
     private fun doAction(invoke: DataResponse<String>) {
