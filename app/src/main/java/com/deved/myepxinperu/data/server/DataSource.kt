@@ -12,7 +12,6 @@ import kotlinx.coroutines.tasks.await
 
 data class DataSource(
     private val firebaseAuth: FirebaseAuth,
-    private val firestore: FirebaseFirestore,
     private val firebaseFirestore: FirebaseFirestore
 ) : RemoteDataSource {
     override suspend fun logIn(user: String, password: String): DataResponse<String> {

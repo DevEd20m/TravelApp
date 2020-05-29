@@ -14,12 +14,14 @@ import com.deved.myepxinperu.data.server.DataSource
 import com.deved.myepxinperu.databinding.FragmentHomeBinding
 import com.deved.myepxinperu.ui.common.getViewModel
 import com.deved.myepxinperu.ui.common.toast
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() {
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseFirestore: FirebaseFirestore
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewmodel: HomeViewModel
-    private lateinit var firebaseFirestore: FirebaseFirestore
     private val adapter by lazy { HomeAdapter() }
 
     override fun onCreateView(
@@ -36,11 +38,13 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerViewPlaces.adapter = adapter
     }
+
     private fun setUpViewModel() {
         viewmodel = getViewModel {
             firebaseFirestore = FirebaseFirestore.getInstance()
-            val respository = PlacesRepository(DataSource(firebaseFirestore))
-            HomeViewModel(GetAllPlaces(respository))
+            firebaseAuth = FirebaseAuth.getInstance()
+            val useCase = GetAllPlaces(PlacesRepository(DataSource(firebaseAuth, firebaseFirestore)))
+            HomeViewModel(useCase)
         }
     }
 
