@@ -1,6 +1,8 @@
 package com.deved.myepxinperu.ui.common
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -95,4 +97,9 @@ fun TextInputLayout.validateInputPasword(password: TextInputEditText,repeatPassw
         return false
     }
     return true
+}
+
+fun Activity.gonnaToClass(toClass:Class<*>){
+    startActivity(Intent(this,toClass) )
+    this.finish()
 }
