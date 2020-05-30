@@ -54,6 +54,7 @@ data class DataSource(
                     Places(
                         it.getString("Id")?.toInt(),
                         it.getString("description"),
+                        it.getString("description"),
                         it.getString("picture"),
                         null, null, null
                     )
@@ -64,6 +65,27 @@ data class DataSource(
             return DataResponse.ExceptionError(e)
         } catch (e: Exception) {
             return DataResponse.ExceptionError(e)
+        }
+    }
+
+    override suspend fun registerExp(place: Places): DataResponse<String> {
+        return try {
+            val pictureTourist = arrayListOf<String?>()
+            pictureTourist.add(place.pictureOne)
+            pictureTourist.add(place.pictureSecond)
+            val touristDestination = hashMapOf<String,Any?>()
+            touristDestination["description"] = place.description
+            touristDestination["picture"] = pictureTourist
+
+            val department = place.department?.replaceRange(0,1,place.department?.substring(0)?.toUpperCase().toString())
+            firebaseFirestore.document("Departament/${department}")
+                .collection("TouristDestination")
+                .document(place.name!!).set(touristDestination)
+            DataResponse.Success(UiContext.getString(R.string.success_registered_user))
+        } catch (e: FirebaseFirestoreException) {
+            DataResponse.ExceptionError(e)
+        } catch (e: Exception) {
+            DataResponse.ExceptionError(e)
         }
     }
 }

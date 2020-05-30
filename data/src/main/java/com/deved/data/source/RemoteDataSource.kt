@@ -8,4 +8,5 @@ interface RemoteDataSource {
     suspend fun logIn(user:String, password:String):DataResponse<String>
     suspend fun registerUser(user:User):DataResponse<String>
     suspend fun fetchAllPlaces(): DataResponse<List<Places>>
+    suspend fun registerExp(place:Places):DataResponse<String>
 }
