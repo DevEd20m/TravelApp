@@ -22,10 +22,10 @@ class ShareViewModel(private val useCase: RegisterExp) : ScopeViewModel() {
     fun validateRegisterExp(
         description: String, pictureOne: String, pictureSecond: String, department: String
     ) {
-        if (description.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDescription))
-        else if (pictureOne.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureOne))
-        else if (pictureSecond.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureSecond))
-        else if (department.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDeparment))
+        if (!description.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDescription))
+        else if (!pictureOne.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureOne))
+        else if (!pictureSecond.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureSecond))
+        else if (!department.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDeparment))
         else shareExp(Places(description,description,pictureOne,pictureSecond,"",department))
     }
 

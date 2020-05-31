@@ -70,4 +70,10 @@ class ShareFragment : Fragment() {
     private val onMessageSuccessObserver = Observer<Any>{
         activity?.toast(it.toString())
     }
+
+
+    companion object {
+        val TAG = ShareFragment::class.java.name
+        fun newInstance() = ShareFragment()
+    }
 }
