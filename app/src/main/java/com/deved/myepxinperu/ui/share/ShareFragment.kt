@@ -7,18 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.deved.myepxinperu.R
+import com.deved.myepxinperu.databinding.FragmentShareBinding
 
-/**
- * A simple [Fragment] subclass.
- */
 class ShareFragment : Fragment() {
-
+    private lateinit var binding :FragmentShareBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_share, container, false)
+        binding = FragmentShareBinding.inflate(inflater,container,false)
+        
+        return binding.root
     }
 
 }

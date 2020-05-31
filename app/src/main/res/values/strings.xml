@@ -12,4 +12,9 @@
     <string name="invalidInputPassword">Ingrese su Contraseña por favor</string>
     <string name="success_registered_user">Usuario creado éxitosamente</string>
     <string name="success_auth">Usuario autenticado éxitosamente</string>
+    <string name="success_registered_shared">Tu experiencia fue compartida éxitosamente</string>
+    <string name="invalidInputDescription">Ingrese una descripción por favor</string>
+    <string name="invalidInputPictureOne">Ingrese una la primera foto por favor</string>
+    <string name="invalidInputPictureSecond">Ingrese una segunda foto por favor</string>
+    <string name="invalidInputDeparment">Ingrese un departemento por favor</string>
 </resources>
