@@ -26,6 +26,7 @@ class ShareViewModel(private val useCase: RegisterExp) : ScopeViewModel() {
         else if (pictureOne.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureOne))
         else if (pictureSecond.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureSecond))
         else if (department.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDeparment))
+        else shareExp(Places(description,description,pictureOne,pictureSecond,"",department))
     }
 
     private fun shareExp(place: Places) {
@@ -38,7 +39,7 @@ class ShareViewModel(private val useCase: RegisterExp) : ScopeViewModel() {
 
     private fun doAction(invoke: DataResponse<String>) {
         when (invoke) {
-            is DataResponse.Success -> _onMessageSuccess.postValue(UiContext.getString(R.string.success_auth))
+            is DataResponse.Success -> _onMessageSuccess.postValue(UiContext.getString(R.string.success_registered_shared))
             is DataResponse.NetworkError -> _onMessageError.postValue(invoke.error)
             is DataResponse.TimeOutServerError -> _onMessageError.postValue(invoke.error)
             is DataResponse.ExceptionError -> _onMessageError.postValue(invoke.errorCode.message)

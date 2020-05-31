@@ -52,7 +52,6 @@ data class DataSource(
             result.forEach {
                 places.add(
                     Places(
-                        it.getString("Id")?.toInt(),
                         it.getString("description"),
                         it.getString("description"),
                         it.getString("picture"),
