@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.deved.data.common.DataResponse
 import com.deved.domain.Places
+import com.deved.interactors.GetPicture
 import com.deved.interactors.RegisterExp
 import com.deved.myepxinperu.R
 import com.deved.myepxinperu.coroutines.ScopeViewModel
@@ -11,7 +12,7 @@ import com.deved.myepxinperu.ui.common.UiContext
 import com.deved.myepxinperu.ui.common.validate
 import kotlinx.coroutines.launch
 
-class ShareViewModel(private val useCase: RegisterExp) : ScopeViewModel() {
+class ShareViewModel(private val useCase: RegisterExp, private val useCasePicture : GetPicture) : ScopeViewModel() {
     private var _isViewLoading = MutableLiveData<Boolean>()
     val isViewLoading: LiveData<Boolean> get() = _isViewLoading
     private var _onMessageError = MutableLiveData<Any>()
@@ -27,6 +28,12 @@ class ShareViewModel(private val useCase: RegisterExp) : ScopeViewModel() {
         else if (!pictureSecond.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureSecond))
         else if (!department.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDeparment))
         else shareExp(Places(description,description,pictureOne,pictureSecond,"",department))
+    }
+
+    fun getPicture(){
+        launch {
+            useCasePicture.invoke()
+        }
     }
 
     private fun shareExp(place: Places) {

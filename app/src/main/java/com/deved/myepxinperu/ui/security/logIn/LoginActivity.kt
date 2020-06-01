@@ -1,10 +1,6 @@
 package com.deved.myepxinperu.ui.security.logIn
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -25,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var fireFirestore: FirebaseFirestore
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -41,6 +38,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        if(fireAuth.currentUser != null){
+            gonnaToClass(MainActivity::class.java)
+        }
+    }
     private fun setUpViewModel() {
         viewModel = getViewModel {
             fireAuth = FirebaseAuth.getInstance()

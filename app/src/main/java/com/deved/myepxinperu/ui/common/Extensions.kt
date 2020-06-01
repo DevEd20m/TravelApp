@@ -3,11 +3,13 @@ package com.deved.myepxinperu.ui.common
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -103,3 +105,6 @@ fun Activity.gonnaToClass(toClass:Class<*>){
     startActivity(Intent(this,toClass) )
     this.finish()
 }
+
+fun Context.isPermissionGranted(permission: List<String>): Boolean =
+    permission.none { ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED }
