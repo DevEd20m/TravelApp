@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.deved.data.repository.PictureRepository
 import com.deved.data.repository.PlacesRepository
 import com.deved.interactors.GetPicture
@@ -32,7 +31,7 @@ class ShareFragment : Fragment() {
     private lateinit var binding :FragmentShareBinding
     private lateinit var viewModel: ShareViewModel
     private lateinit var picturesArray :MutableList<Picture>
-    private val adapter  by lazy { ShareAdapter() }
+    private val adapter  by lazy { ShareAdapter(getListener()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +40,6 @@ class ShareFragment : Fragment() {
         binding = FragmentShareBinding.inflate(inflater,container,false)
         setUpViewModel()
         setUpRecyclerView()
-//        populate()
         setUpViewModelObserver()
         setUpEvents()
         return binding.root
@@ -51,11 +49,6 @@ class ShareFragment : Fragment() {
         binding.recyclerViewPictures.layoutManager = GridLayoutManager(activity,2)
         binding.recyclerViewPictures.adapter = adapter
         picturesArray = mutableListOf()
-    }
-
-    private fun populate(){
-        picturesArray.add(Picture(null,"Imagen","Descripción"))
-        adapter.setData(picturesArray)
     }
 
     private fun setUpViewModel() {
@@ -86,6 +79,17 @@ class ShareFragment : Fragment() {
         }
     }
 
+    private fun getListener(): (Picture) -> Unit {
+        return{
+            deletePicture(it)
+        }
+    }
+
+    private fun deletePicture(item:Picture) {
+        picturesArray.remove(item)
+        adapter.setData(picturesArray)
+    }
+
     private val isViewLoadingObserver = Observer<Boolean>{
         binding.progressBarShareExp.isVisible = it
     }
@@ -103,7 +107,6 @@ class ShareFragment : Fragment() {
         if (resultCode == Activity.RESULT_OK && requestCode == 1) {
             picturesArray.add(Picture(data?.data,"Imagen2","Descripción2"))
             adapter.setData(picturesArray)
-
         }
     }
 
