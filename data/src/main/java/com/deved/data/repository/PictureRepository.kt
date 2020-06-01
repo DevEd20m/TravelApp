@@ -1,5 +1,6 @@
 package com.deved.data.repository
 
+import com.deved.data.common.DataResponse
 import com.deved.data.repository.PermissionsChecker.Permissions.READ_EXTERNAL_STORAGE
 import com.deved.data.repository.PermissionsChecker.Permissions.WRITE_EXTERNAL_STORAGE
 import com.deved.data.source.PictureDataSource
@@ -14,6 +15,9 @@ class PictureRepository(
         } else {
             permissionsChecker.requestPermissionsChecker()
         }
+    }
+    suspend fun uploadPicture(uri:String):DataResponse<String>{
+        return pictureDataSource.uploadPicture(uri)
     }
 }
 

@@ -12,7 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.tasks.await
 
-data class DataSource(
+class ThePlacesDataSource(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseFirestore: FirebaseFirestore
 ) : RemoteDataSource {

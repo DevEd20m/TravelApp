@@ -14,19 +14,22 @@ import com.deved.data.repository.PictureRepository
 import com.deved.data.repository.PlacesRepository
 import com.deved.interactors.GetPicture
 import com.deved.interactors.RegisterExp
+import com.deved.interactors.UploadPicture
 import com.deved.myepxinperu.data.AndroidPermissionsChecker
-import com.deved.myepxinperu.data.CameraServiceDataSource
+import com.deved.myepxinperu.data.server.ThePictureDataSource
 
-import com.deved.myepxinperu.data.server.DataSource
+import com.deved.myepxinperu.data.server.ThePlacesDataSource
 import com.deved.myepxinperu.databinding.FragmentShareBinding
 import com.deved.myepxinperu.ui.common.getViewModel
 import com.deved.myepxinperu.ui.common.toast
 import com.deved.myepxinperu.ui.model.Picture
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 class ShareFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
+    private lateinit var storage: FirebaseStorage
     private lateinit var firestore: FirebaseFirestore
     private lateinit var binding :FragmentShareBinding
     private lateinit var viewModel: ShareViewModel
@@ -54,10 +57,13 @@ class ShareFragment : Fragment() {
     private fun setUpViewModel() {
         viewModel = getViewModel {
             auth = FirebaseAuth.getInstance()
+            storage = FirebaseStorage.getInstance()
             firestore = FirebaseFirestore.getInstance()
-            val useCase = RegisterExp(PlacesRepository(DataSource(auth,firestore)))
-            val useCasePicture = GetPicture(PictureRepository(CameraServiceDataSource(this),AndroidPermissionsChecker(activity)))
-            ShareViewModel(useCase,useCasePicture)
+            val useCase = RegisterExp(PlacesRepository(ThePlacesDataSource(auth,firestore)))
+            val pictureRepository = PictureRepository(ThePictureDataSource(this,storage),AndroidPermissionsChecker(activity))
+            val useCasePicture = GetPicture(pictureRepository)
+            val uploadPicture = UploadPicture(pictureRepository)
+            ShareViewModel(useCase,useCasePicture,uploadPicture)
         }
     }
 
@@ -71,9 +77,9 @@ class ShareFragment : Fragment() {
         binding.materialButtonShareExp.setOnClickListener {
             val description = binding.textInputEditTextDescription.text?.trim().toString()
             val department = binding.textInputEditDepartment.text?.trim().toString()
-            val pictureOne = picturesArray[0]
-            val pictureSecond = picturesArray[1]
-//            viewModel.validateRegisterExp(description,firstPicture,secondPicture,department)
+            val one = picturesArray[0]
+            val second = picturesArray[1]
+            viewModel.validateRegisterExp(description,one.picture.toString(),second.picture.toString(),department)
         }
 
         binding.imageButtonAdd.setOnClickListener {
