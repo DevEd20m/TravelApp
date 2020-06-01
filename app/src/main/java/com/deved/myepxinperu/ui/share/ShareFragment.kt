@@ -71,6 +71,8 @@ class ShareFragment : Fragment() {
         binding.materialButtonShareExp.setOnClickListener {
             val description = binding.textInputEditTextDescription.text?.trim().toString()
             val department = binding.textInputEditDepartment.text?.trim().toString()
+            val pictureOne = picturesArray[0]
+            val pictureSecond = picturesArray[1]
 //            viewModel.validateRegisterExp(description,firstPicture,secondPicture,department)
         }
 
