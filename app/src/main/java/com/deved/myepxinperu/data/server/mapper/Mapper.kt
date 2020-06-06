@@ -1,4 +1,5 @@
 package com.deved.myepxinperu.data.server.mapper
 
-interface Mapper {
+interface Mapper<O, I> {
+    fun mapToEntity(type:I): O
 }

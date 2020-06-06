@@ -1,8 +1,8 @@
 package com.deved.interactors
 
 import com.deved.data.repository.PlacesRepository
-import com.deved.domain.Places
+import com.deved.domain.Department
 
 class RegisterExp (private val placesRepository: PlacesRepository){
-    suspend fun invoke(place:Places)= placesRepository.registerExp(place)
+    suspend fun invoke(place:Department)= placesRepository.registerExp(place)
 }

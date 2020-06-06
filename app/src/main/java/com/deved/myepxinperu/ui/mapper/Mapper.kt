@@ -1,4 +1,5 @@
-package com.deved.myepxinperu.ui.modelMapper
+package com.deved.myepxinperu.ui.mapper
 
-interface Mapper {
+interface Mapper<O, I> {
+    fun mapToEntity(type: I): O
 }
