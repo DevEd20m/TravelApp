@@ -8,12 +8,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.deved.data.repository.PlacesRepository
-import com.deved.domain.Places
+import com.deved.domain.Department
 import com.deved.interactors.GetAllPlaces
 import com.deved.myepxinperu.data.server.ThePlacesDataSource
 import com.deved.myepxinperu.databinding.FragmentHomeBinding
 import com.deved.myepxinperu.ui.common.getViewModel
 import com.deved.myepxinperu.ui.common.toast
+import com.deved.myepxinperu.ui.mapper.ListDepartmentMapperView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -54,9 +55,9 @@ class HomeFragment : Fragment() {
         viewmodel.onMessageError.observe(viewLifecycleOwner, onMessageErrorObserver)
     }
 
-    private val placesObserver = Observer<List<Places>> {
+    private val placesObserver = Observer<List<Department>> {
         it?.let { places ->
-            adapter.places = places
+            adapter.places = ListDepartmentMapperView().mapToEntity(it)
         }
     }
 
