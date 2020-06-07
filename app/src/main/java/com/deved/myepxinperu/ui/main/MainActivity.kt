@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        finish()
-        super.onBackPressed()
+        if (supportFragmentManager.backStackEntryCount > 1) super.onBackPressed()
+        else finish()
     }
 
     companion object {
