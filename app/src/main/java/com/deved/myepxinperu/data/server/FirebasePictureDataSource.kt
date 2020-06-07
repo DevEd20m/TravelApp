@@ -9,7 +9,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
 import kotlinx.coroutines.tasks.await
 
-class ThePictureDataSource(
+class FirebasePictureDataSource(
     private val application: Fragment?,
     private val firebaseStorage: FirebaseStorage
 ) : PictureDataSource {

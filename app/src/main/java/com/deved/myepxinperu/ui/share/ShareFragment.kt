@@ -16,9 +16,9 @@ import com.deved.interactors.GetPicture
 import com.deved.interactors.RegisterExp
 import com.deved.interactors.UploadPicture
 import com.deved.myepxinperu.data.AndroidPermissionsChecker
-import com.deved.myepxinperu.data.server.ThePictureDataSource
+import com.deved.myepxinperu.data.server.FirebasePictureDataSource
 
-import com.deved.myepxinperu.data.server.ThePlacesDataSource
+import com.deved.myepxinperu.data.server.FirebasePlacesDataSource
 import com.deved.myepxinperu.databinding.FragmentShareBinding
 import com.deved.myepxinperu.ui.common.getViewModel
 import com.deved.myepxinperu.ui.common.toast
@@ -28,7 +28,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 
 class ShareFragment : Fragment() {
-    private lateinit var auth: FirebaseAuth
     private lateinit var storage: FirebaseStorage
     private lateinit var firestore: FirebaseFirestore
     private lateinit var binding :FragmentShareBinding
@@ -56,11 +55,10 @@ class ShareFragment : Fragment() {
 
     private fun setUpViewModel() {
         viewModel = getViewModel {
-            auth = FirebaseAuth.getInstance()
             storage = FirebaseStorage.getInstance()
             firestore = FirebaseFirestore.getInstance()
-            val useCase = RegisterExp(PlacesRepository(ThePlacesDataSource(auth,firestore)))
-            val pictureRepository = PictureRepository(ThePictureDataSource(this,storage),AndroidPermissionsChecker(activity))
+            val useCase = RegisterExp(PlacesRepository(FirebasePlacesDataSource(firestore)))
+            val pictureRepository = PictureRepository(FirebasePictureDataSource(this,storage),AndroidPermissionsChecker(activity))
             val useCasePicture = GetPicture(pictureRepository)
             val uploadPicture = UploadPicture(pictureRepository)
             ShareViewModel(useCase,useCasePicture,uploadPicture)

@@ -6,7 +6,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.deved.data.repository.SecurityRepository
 import com.deved.interactors.LogIn
-import com.deved.myepxinperu.data.server.TheSecurityDataSource
+import com.deved.myepxinperu.data.server.FirebaseSecurityDataSource
 import com.deved.myepxinperu.databinding.ActivityLoginBinding
 import com.deved.myepxinperu.ui.common.getViewModel
 import com.deved.myepxinperu.ui.common.gonnaToClass
@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
         viewModel = getViewModel {
             fireAuth = FirebaseAuth.getInstance()
             fireFirestore = FirebaseFirestore.getInstance()
-            val useCase = LogIn(SecurityRepository(TheSecurityDataSource(fireAuth, fireFirestore)))
+            val useCase = LogIn(SecurityRepository(FirebaseSecurityDataSource(fireAuth, fireFirestore)))
             LoginViewModel(useCase)
         }
     }

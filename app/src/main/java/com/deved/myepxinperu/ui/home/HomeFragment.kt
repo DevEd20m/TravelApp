@@ -10,15 +10,13 @@ import androidx.lifecycle.Observer
 import com.deved.data.repository.PlacesRepository
 import com.deved.domain.Department
 import com.deved.interactors.GetAllPlaces
-import com.deved.myepxinperu.data.server.ThePlacesDataSource
+import com.deved.myepxinperu.data.server.FirebasePlacesDataSource
 import com.deved.myepxinperu.databinding.FragmentHomeBinding
 import com.deved.myepxinperu.ui.common.getViewModel
 import com.deved.myepxinperu.ui.common.toast
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() {
-    private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firebaseFirestore: FirebaseFirestore
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewmodel: HomeViewModel
@@ -43,8 +41,7 @@ class HomeFragment : Fragment() {
     private fun setUpViewModel() {
         viewmodel = getViewModel {
             firebaseFirestore = FirebaseFirestore.getInstance()
-            firebaseAuth = FirebaseAuth.getInstance()
-            val useCase = GetAllPlaces(PlacesRepository(ThePlacesDataSource(firebaseAuth, firebaseFirestore)))
+            val useCase = GetAllPlaces(PlacesRepository(FirebasePlacesDataSource(firebaseFirestore)))
             HomeViewModel(useCase)
         }
     }

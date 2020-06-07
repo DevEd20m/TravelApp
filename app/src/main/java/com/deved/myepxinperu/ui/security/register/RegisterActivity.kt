@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import com.deved.data.repository.SecurityRepository
 import com.deved.interactors.RegisterUser
 import com.deved.myepxinperu.R
-import com.deved.myepxinperu.data.server.TheSecurityDataSource
+import com.deved.myepxinperu.data.server.FirebaseSecurityDataSource
 import com.deved.myepxinperu.databinding.ActivityRegisterBinding
 import com.deved.myepxinperu.ui.common.getViewModel
 import com.deved.myepxinperu.ui.common.toast
@@ -35,7 +35,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         viewmodel = getViewModel {
             fbFirestore = FirebaseFirestore.getInstance()
             firebaseAuth = FirebaseAuth.getInstance()
-            val useCase = RegisterUser(SecurityRepository(TheSecurityDataSource(firebaseAuth, fbFirestore)))
+            val useCase = RegisterUser(SecurityRepository(FirebaseSecurityDataSource(firebaseAuth, fbFirestore)))
             RegisterViewModel(useCase)
         }
     }
