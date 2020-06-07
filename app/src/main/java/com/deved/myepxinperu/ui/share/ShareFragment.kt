@@ -17,13 +17,11 @@ import com.deved.interactors.RegisterExp
 import com.deved.interactors.UploadPicture
 import com.deved.myepxinperu.data.AndroidPermissionsChecker
 import com.deved.myepxinperu.data.server.FirebasePictureDataSource
-
 import com.deved.myepxinperu.data.server.FirebasePlacesDataSource
 import com.deved.myepxinperu.databinding.FragmentShareBinding
 import com.deved.myepxinperu.ui.common.getViewModel
 import com.deved.myepxinperu.ui.common.toast
 import com.deved.myepxinperu.ui.model.Picture
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 
