@@ -75,11 +75,13 @@ class ShareFragment : Fragment() {
 
     private fun setUpEvents() {
         binding.materialButtonShareExp.setOnClickListener {
-            val description = binding.textInputEditTextDescription.text?.trim().toString()
             val department = binding.textInputEditDepartment.text?.trim().toString()
+            val touristName = binding.textInputEditTextNameTourist.text?.trim().toString()
+            val touristDescription = binding.textInputEditTextTouristDescription.text?.trim().toString()
+
             val one = picturesArray[0]
             val second = picturesArray[1]
-            viewModel.validateRegisterExp(description,one.picture.toString(),second.picture.toString(),department)
+            viewModel.validateRegisterExp(department,touristName,touristDescription,one.picture.toString(),second.picture.toString())
         }
 
         binding.imageButtonAdd.setOnClickListener {

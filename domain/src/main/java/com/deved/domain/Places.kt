@@ -1,5 +1,9 @@
 package com.deved.domain
 
 data class Places(
-    val picture: String
+    val name: String?,
+    val description: String?,
+    val picturesOne: String?,
+    val picturesSecond: String?,
+    val createAt: String?
 )

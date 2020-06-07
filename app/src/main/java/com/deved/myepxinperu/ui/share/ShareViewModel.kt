@@ -3,6 +3,9 @@ package com.deved.myepxinperu.ui.share
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.deved.data.common.DataResponse
+import com.deved.domain.Department
+import com.deved.domain.Places
+import com.deved.domain.PlacesPicture
 import com.deved.interactors.GetPicture
 import com.deved.interactors.RegisterExp
 import com.deved.interactors.UploadPicture
@@ -10,9 +13,6 @@ import com.deved.myepxinperu.R
 import com.deved.myepxinperu.coroutines.ScopeViewModel
 import com.deved.myepxinperu.ui.common.UiContext
 import com.deved.myepxinperu.ui.common.validate
-import com.deved.myepxinperu.ui.mapper.DepartmentMapper
-import com.deved.myepxinperu.ui.model.DepartmentView
-import com.deved.myepxinperu.ui.model.PlacesView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,14 +30,16 @@ class ShareViewModel(
     val onMessageSuccess: LiveData<Any> get() = _onMessageSuccess
 
     fun validateRegisterExp(
-        name: String, description: String,
+        department: String, touristName: String,
+        touristDescription: String,
         pictureOne: String, pictureSecond: String
     ) {
-        if (!name.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputName))
-        if (!description.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDescription))
+        if (!department.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDeparment))
+        else if (!touristName.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputTouristName))
+        else if (!touristDescription.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDescription))
         else if (!pictureOne.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureOne))
         else if (!pictureSecond.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureSecond))
-        else shareExp(name,description, pictureOne, pictureSecond ,"")
+        else shareExp(department,touristName,touristDescription, pictureOne, pictureSecond ,"")
     }
 
     fun getPicture() {
@@ -47,25 +49,20 @@ class ShareViewModel(
     }
 
     private fun shareExp(
-        name:String,
-        description: String,
+        department:String,
+        touristName:String,
+        touristDescription: String,
         one: String,
         second: String,
         createAt:String
     ) {
         launch {
-            val listPicture = mutableListOf<PlacesView>()
             _isViewLoading.postValue(true)
             val one = withContext(Dispatchers.IO) { uploadPicture.invoke(one) }
             val second = withContext(Dispatchers.IO) { uploadPicture.invoke(second) }
             val resultFirst = uploadDoAction(one).toString()
             val resultSecond = uploadDoAction(second).toString()
-            if(resultFirst.startsWith("https")){
-                listPicture.add(PlacesView(resultFirst))
-            }else if(resultSecond.startsWith("https")){
-                listPicture.add(PlacesView(resultSecond))
-            }
-            doAction(useCase.invoke(DepartmentMapper().mapToEntity(DepartmentView(name,description,listPicture,createAt))))
+            doAction(useCase.invoke(Department(department,Places(touristName,touristDescription,resultFirst,resultSecond,createAt))))
             _isViewLoading.postValue(false)
         }
     }

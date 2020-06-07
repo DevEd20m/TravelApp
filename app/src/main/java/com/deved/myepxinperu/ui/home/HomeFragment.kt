@@ -14,7 +14,6 @@ import com.deved.myepxinperu.data.server.ThePlacesDataSource
 import com.deved.myepxinperu.databinding.FragmentHomeBinding
 import com.deved.myepxinperu.ui.common.getViewModel
 import com.deved.myepxinperu.ui.common.toast
-import com.deved.myepxinperu.ui.mapper.ListDepartmentMapperView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -31,6 +30,7 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         setUpViewModel()
+        viewmodel.fetchPlaces()
         attachViewModelObservers()
         return binding.root
     }
@@ -57,7 +57,7 @@ class HomeFragment : Fragment() {
 
     private val placesObserver = Observer<List<Department>> {
         it?.let { places ->
-            adapter.places = ListDepartmentMapperView().mapToEntity(it)
+            adapter.places = it
         }
     }
 

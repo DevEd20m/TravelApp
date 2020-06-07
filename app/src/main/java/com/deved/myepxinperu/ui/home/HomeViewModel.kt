@@ -18,11 +18,7 @@ class HomeViewModel(
     private var _onMessageError = MutableLiveData<Any>()
     val onMessageError: LiveData<Any> get() = _onMessageError
 
-    init {
-        fetchPlaces()
-    }
-
-    private fun fetchPlaces() = launch {
+    fun fetchPlaces() = launch {
         _isViewLoading.postValue(true)
         doActionResult(fetchPlaces.invoke())
         _isViewLoading.postValue(false)

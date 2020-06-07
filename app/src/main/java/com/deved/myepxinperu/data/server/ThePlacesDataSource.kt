@@ -3,10 +3,10 @@ package com.deved.myepxinperu.data.server
 import com.deved.data.common.DataResponse
 import com.deved.data.source.RemoteDataSource
 import com.deved.domain.Department
+import com.deved.domain.Places
+import com.deved.domain.PlacesPicture
 import com.deved.domain.User
 import com.deved.myepxinperu.R
-import com.deved.myepxinperu.data.server.mapper.DepartmentMapper
-import com.deved.myepxinperu.data.server.model.DepartmentServer
 import com.deved.myepxinperu.ui.common.UiContext
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -49,35 +49,45 @@ class ThePlacesDataSource(
     }
 
     override suspend fun fetchAllPlaces(): DataResponse<List<Department>> {
-        try {
-            val result = firebaseFirestore.collection("MyExpInPeru").get().await()
+        return try {
+            val result = firebaseFirestore.collectionGroup("TouristDestination").get().await()
             val department = arrayListOf<Department>()
             result.forEach {
-                department.add(it.toObject(Department::class.java))
+                department.add(
+                    Department(
+                        null,
+                        Places(
+                            it.getString("name"),
+                            it.getString("description"),
+                            it.getString("pictureOne"),
+                            it.getString("pictureSecond"),
+                            it.getString("createAt")
+                        )
+                    )
+                )
             }
-            return DataResponse.Success(department)
+            DataResponse.Success(department)
         } catch (e: FirebaseFirestoreException) {
-            return DataResponse.ExceptionError(e)
+            DataResponse.ExceptionError(e)
         } catch (e: Exception) {
-            return DataResponse.ExceptionError(e)
+            DataResponse.ExceptionError(e)
         }
     }
 
-    override suspend fun registerExp(place: Department): DataResponse<String> {
+    override suspend fun registerExp(data: Department): DataResponse<String> {
         return try {
-            val pictures = arrayListOf<String?>()
-            pictures.add(place.pictures[0].picture)
-            pictures.add(place.pictures[1].picture)
-
             val department = hashMapOf<String, Any?>()
-            department["name"] = place.name
-            department["description"] = place.description
-            department["picture"] = pictures
-            department["createAt"] = place.createAt
+            with(data.place!!) {
+                department["name"] = name
+                department["description"] = description
+                department["pictureOne"] = picturesOne
+                department["pictureSecond"] = picturesSecond
+                department["createAt"] = createAt
+            }
 
-            firebaseFirestore.document("Department/${place.name.toUpperCase()}")
+            firebaseFirestore.document("Department/${data.name!!.toUpperCase()}")
                 .collection("TouristDestination")
-                .document(place.name).set(department)
+                .document(data.place!!.name!!).set(department)
             DataResponse.Success(UiContext.getString(R.string.success_registered_shared))
         } catch (e: FirebaseFirestoreException) {
             DataResponse.ExceptionError(e)
