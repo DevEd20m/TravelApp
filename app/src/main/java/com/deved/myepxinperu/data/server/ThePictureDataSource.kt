@@ -5,6 +5,8 @@ import android.net.Uri
 import androidx.fragment.app.Fragment
 import com.deved.data.common.DataResponse
 import com.deved.data.source.PictureDataSource
+import com.deved.myepxinperu.R
+import com.deved.myepxinperu.ui.common.UiContext
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
 import kotlinx.coroutines.tasks.await
@@ -23,8 +25,9 @@ class ThePictureDataSource(
         return try {
             val uriConverted = Uri.parse(uri)
             val reference = firebaseStorage.reference.child("Department/${uriConverted.lastPathSegment}")
-            val uri = reference.putFile(uriConverted).await().uploadSessionUri
+            val uri = reference.putFile(uriConverted).await().storage.downloadUrl.await()
             DataResponse.Success(uri.toString())
+
         }catch (e:StorageException){
             DataResponse.ExceptionError(e)
         }catch (e:Exception){

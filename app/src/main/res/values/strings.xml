@@ -18,4 +18,5 @@
     <string name="invalidInputPictureSecond">Ingrese una segunda foto por favor</string>
     <string name="invalidInputDeparment">Ingrese un departemento por favor</string>
     <string name="invalidInputTouristName">Ingrese el nombre del atractivo turistico</string>
+    <string name="failed_upload_image">No se completó la carga</string>
 </resources>
