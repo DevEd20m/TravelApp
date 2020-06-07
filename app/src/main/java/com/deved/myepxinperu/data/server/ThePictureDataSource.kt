@@ -5,8 +5,6 @@ import android.net.Uri
 import androidx.fragment.app.Fragment
 import com.deved.data.common.DataResponse
 import com.deved.data.source.PictureDataSource
-import com.deved.myepxinperu.R
-import com.deved.myepxinperu.ui.common.UiContext
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
 import kotlinx.coroutines.tasks.await

@@ -1,10 +1,10 @@
 package com.deved.data.repository
 
 import com.deved.data.common.DataResponse
-import com.deved.data.source.RemoteDataSource
+import com.deved.data.source.SecurityDataSource
 import com.deved.domain.User
 
-class SecurityRepository(private val remoteDataSource: RemoteDataSource) {
+class SecurityRepository(private val remoteDataSource: SecurityDataSource) {
 
     suspend fun logIn(user: String, password: String): DataResponse<String> {
         return remoteDataSource.logIn(user, password)
