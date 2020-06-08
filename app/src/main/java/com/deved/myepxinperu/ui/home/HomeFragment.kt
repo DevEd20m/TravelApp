@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.deved.data.repository.PlacesRepository
 import com.deved.domain.Department
+import com.deved.domain.Places
 import com.deved.interactors.GetAllPlaces
 import com.deved.myepxinperu.data.server.FirebasePlacesDataSource
 import com.deved.myepxinperu.databinding.FragmentHomeBinding
@@ -55,7 +56,7 @@ class HomeFragment : Fragment() {
         viewmodel.onMessageError.observe(viewLifecycleOwner, onMessageErrorObserver)
     }
 
-    private val placesObserver = Observer<List<Department>> {
+    private val placesObserver = Observer<List<Places>> {
         it?.let { places ->
             adapter.places = it
         }
@@ -69,11 +70,11 @@ class HomeFragment : Fragment() {
         activity?.toast(it.toString())
     }
 
-    private fun getDepartment(): (Department) -> Unit {
+    private fun getDepartment(): (Places) -> Unit {
         return { goToDetail(it) }
     }
 
-    private fun goToDetail(it: Department) {
+    private fun goToDetail(it: Places) {
         listener.goToDetail(it)
     }
 
@@ -87,6 +88,6 @@ class HomeFragment : Fragment() {
     }
 
     interface HomeFragmentListener{
-        fun goToDetail(it: Department)
+        fun goToDetail(it: Places)
     }
 }

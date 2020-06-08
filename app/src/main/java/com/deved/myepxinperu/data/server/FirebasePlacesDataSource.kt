@@ -5,9 +5,7 @@ import com.deved.data.source.PlaceDataSource
 import com.deved.domain.Department
 import com.deved.domain.Places
 import com.deved.myepxinperu.R
-import com.deved.myepxinperu.data.server.mapper.DepartmentMapper
 import com.deved.myepxinperu.data.server.mapper.PlacesMapper
-import com.deved.myepxinperu.data.server.model.DepartmentServer
 import com.deved.myepxinperu.data.server.model.PlacesServer
 import com.deved.myepxinperu.ui.common.UiContext
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,25 +16,14 @@ class FirebasePlacesDataSource(
     private val firebaseFirestore: FirebaseFirestore
 ) : PlaceDataSource {
 
-    override suspend fun fetchAllPlaces(): DataResponse<List<Department>> {
+    override suspend fun fetchAllPlaces(): DataResponse<List<Places>> {
         return try {
             val result = firebaseFirestore.collectionGroup("TouristDestination").get().await()
-            val department = arrayListOf<Department>()
+            val places = arrayListOf<Places>()
             result.forEach {
-                department.add(
-                    Department(
-                        null,
-                        Places(
-                            it.getString("name"),
-                            it.getString("description"),
-                            it.getString("pictureOne"),
-                            it.getString("pictureSecond"),
-                            it.getString("createAt")
-                        )
-                    )
-                )
+                places.add(PlacesMapper().mapToEntity(it.toObject(PlacesServer::class.java)))
             }
-            DataResponse.Success(department)
+            DataResponse.Success(places)
         } catch (e: FirebaseFirestoreException) {
             DataResponse.ExceptionError(e)
         } catch (e: Exception) {

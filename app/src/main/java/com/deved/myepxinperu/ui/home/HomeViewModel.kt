@@ -3,7 +3,7 @@ package com.deved.myepxinperu.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.deved.data.common.DataResponse
-import com.deved.domain.Department
+import com.deved.domain.Places
 import com.deved.interactors.GetAllPlaces
 import com.deved.myepxinperu.coroutines.ScopeViewModel
 import kotlinx.coroutines.launch
@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val fetchPlaces: GetAllPlaces
 ) : ScopeViewModel() {
-    private var _places = MutableLiveData<List<Department>>().apply { value = null }
-    val places: LiveData<List<Department>> get() = _places
+    private var _places = MutableLiveData<List<Places>>().apply { value = null }
+    val places: LiveData<List<Places>> get() = _places
     private var _isViewLoading = MutableLiveData<Boolean>()
     val isViewLoading: LiveData<Boolean> get() = _isViewLoading
     private var _onMessageError = MutableLiveData<Any>()
@@ -24,7 +24,7 @@ class HomeViewModel(
         _isViewLoading.postValue(false)
     }
 
-    private fun doActionResult(invoke: DataResponse<List<Department>>) {
+    private fun doActionResult(invoke: DataResponse<List<Places>>) {
         when (invoke) {
             is DataResponse.Success -> _places.value = invoke.data
             is DataResponse.NetworkError -> _onMessageError.postValue(invoke.error)

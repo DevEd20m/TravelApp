@@ -4,15 +4,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.deved.domain.Department
+import com.deved.domain.Places
 import com.deved.myepxinperu.R
 import com.deved.myepxinperu.databinding.ItemPlacesBinding
 import com.deved.myepxinperu.ui.common.basicDiffUtil
 import com.deved.myepxinperu.ui.common.inflate
 
-class HomeAdapter(private val listener:(Department)->Unit) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(private val listener:(Places)->Unit) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-    var places: List<Department> by basicDiffUtil(
+    var places: List<Places> by basicDiffUtil(
         emptyList(), { old, new -> old.name == new.name }
     )
 
@@ -34,10 +34,10 @@ class HomeAdapter(private val listener:(Department)->Unit) : RecyclerView.Adapte
         RecyclerView.ViewHolder(view) {
         private val binding = ItemPlacesBinding.bind(view)
 
-        fun bind(department: Department) {
+        fun bind(place: Places) {
             with(binding) {
-                textViewNameMovie.text = department.place?.name
-                imageViewBackground.load(department.place?.picturesOne){
+                textViewNameMovie.text = place.name
+                imageViewBackground.load(place.picturesOne){
                     crossfade(true)
                     crossfade(500)
                 }

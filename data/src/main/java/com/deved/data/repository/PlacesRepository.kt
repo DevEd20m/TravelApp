@@ -7,7 +7,7 @@ import com.deved.domain.Places
 
 class PlacesRepository(private val remoteDataSource: PlaceDataSource) {
 
-    suspend fun getAllPlaces(): DataResponse<List<Department>> {
+    suspend fun getAllPlaces(): DataResponse<List<Places>> {
         return remoteDataSource.fetchAllPlaces()
     }
     suspend fun registerExp(place:Department):DataResponse<String>{

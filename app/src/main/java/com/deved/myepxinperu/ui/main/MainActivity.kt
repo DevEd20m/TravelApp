@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import com.deved.domain.Department
+import com.deved.domain.Places
 import com.deved.myepxinperu.R
 import com.deved.myepxinperu.databinding.ActivityMainBinding
 import com.deved.myepxinperu.ui.detail.DetailFragment
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.HomeFragmentListener {
             addToBackStack(null)
         }.commit()
     }
-    override fun goToDetail(it: Department) {
+    override fun goToDetail(it: Places) {
         changeFragment(DetailFragment.newInstance(1))
     }
 
