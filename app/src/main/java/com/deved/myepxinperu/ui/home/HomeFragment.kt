@@ -1,5 +1,6 @@
 package com.deved.myepxinperu.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +21,8 @@ class HomeFragment : Fragment() {
     private lateinit var firebaseFirestore: FirebaseFirestore
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewmodel: HomeViewModel
-    private val adapter by lazy { HomeAdapter() }
+    private val adapter by lazy { HomeAdapter(getDepartment()) }
+    private lateinit var listener: HomeFragmentListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +43,8 @@ class HomeFragment : Fragment() {
     private fun setUpViewModel() {
         viewmodel = getViewModel {
             firebaseFirestore = FirebaseFirestore.getInstance()
-            val useCase = GetAllPlaces(PlacesRepository(FirebasePlacesDataSource(firebaseFirestore)))
+            val useCase =
+                GetAllPlaces(PlacesRepository(FirebasePlacesDataSource(firebaseFirestore)))
             HomeViewModel(useCase)
         }
     }
@@ -66,8 +69,24 @@ class HomeFragment : Fragment() {
         activity?.toast(it.toString())
     }
 
+    private fun getDepartment(): (Department) -> Unit {
+        return { goToDetail(it) }
+    }
+
+    private fun goToDetail(it: Department) {
+        listener.goToDetail(it)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if(context is HomeFragmentListener) listener = context
+    }
     companion object {
         val TAG = HomeFragment::class.java.name
         fun newInstance() = HomeFragment()
+    }
+
+    interface HomeFragmentListener{
+        fun goToDetail(it: Department)
     }
 }
