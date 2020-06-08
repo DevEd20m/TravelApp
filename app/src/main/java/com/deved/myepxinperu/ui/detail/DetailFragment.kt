@@ -19,16 +19,18 @@ class DetailFragment : Fragment() {
     private lateinit var fireStore: FirebaseFirestore
     private lateinit var viewmodel: DetailViewModel
     private lateinit var binding: FragmentDetailBinding
+    private var departmentName: String? = null
     private var placeName: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        departmentName = arguments?.getString(mDepartmentName, "")
         placeName = arguments?.getString(mPlaceName, "")
         viewmodel = getViewModel {
             fireStore = FirebaseFirestore.getInstance()
             val useCase = GetDetailPlace(PlacesRepository(FirebasePlacesDataSource(fireStore)))
             DetailViewModel(useCase)
         }
-        placeName?.let { viewmodel.getDetailPlace(it) }
+        viewmodel.getDetailPlace(departmentName!!,placeName!!)
     }
 
     override fun onCreateView(
@@ -59,12 +61,14 @@ class DetailFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(placeName: String?) = DetailFragment().apply {
+        fun newInstance(departmentName:String?,placeName: String?) = DetailFragment().apply {
             arguments = Bundle().apply {
+                putString(mDepartmentName, departmentName)
                 putString(mPlaceName, placeName)
             }
         }
 
+        private const val mDepartmentName = "mDepartmentName"
         private const val mPlaceName = "mPlaceName"
     }
 }

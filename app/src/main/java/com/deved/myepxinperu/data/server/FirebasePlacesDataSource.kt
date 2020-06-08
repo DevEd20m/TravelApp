@@ -31,6 +31,22 @@ class FirebasePlacesDataSource(
         }
     }
 
+    override suspend fun fetchAllDepartment(): DataResponse<List<Department>> {
+        return try {
+            val result = firebaseFirestore.collectionGroup("TouristDestination").get().await()
+            val places = arrayListOf<Department>()
+            result.forEach {
+                val path = it.reference.parent.parent?.id
+                places.add(Department(path,PlacesMapper().mapToEntity(it.toObject(PlacesServer::class.java))))
+            }
+            DataResponse.Success(places)
+        } catch (e: FirebaseFirestoreException) {
+            DataResponse.ExceptionError(e)
+        } catch (e: Exception) {
+            DataResponse.ExceptionError(e)
+        }
+    }
+
     override suspend fun registerExp(data: Department): DataResponse<String> {
         return try {
             val department = hashMapOf<String, Any?>()
@@ -53,11 +69,11 @@ class FirebasePlacesDataSource(
         }
     }
 
-    override suspend fun getDetailPlace(placeName: String): DataResponse<Places> {
+    override suspend fun getDetailPlace(departmentName:String,placeName: String): DataResponse<Places> {
         return try {
             val result = firebaseFirestore.collection("Department")
-                .document("AYACUCHO").collection("TouristDestination")
-                .document("Wari").get().await()
+                .document(departmentName).collection("TouristDestination")
+                .document(placeName).get().await()
             DataResponse.Success(PlacesMapper().mapToEntity(result.toObject(PlacesServer::class.java)))
         } catch (e: FirebaseFirestoreException) {
             DataResponse.ExceptionError(e)

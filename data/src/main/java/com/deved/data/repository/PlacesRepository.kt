@@ -10,10 +10,13 @@ class PlacesRepository(private val remoteDataSource: PlaceDataSource) {
     suspend fun getAllPlaces(): DataResponse<List<Places>> {
         return remoteDataSource.fetchAllPlaces()
     }
+    suspend fun getAllDepartment(): DataResponse<List<Department>> {
+        return remoteDataSource.fetchAllDepartment()
+    }
     suspend fun registerExp(place:Department):DataResponse<String>{
         return remoteDataSource.registerExp(place)
     }
-    suspend fun getDetailPlace(placeName : String):DataResponse<Places>{
-        return remoteDataSource.getDetailPlace(placeName)
+    suspend fun getDetailPlace(departmentName:String,placeName : String):DataResponse<Places>{
+        return remoteDataSource.getDetailPlace(departmentName,placeName)
     }
 }

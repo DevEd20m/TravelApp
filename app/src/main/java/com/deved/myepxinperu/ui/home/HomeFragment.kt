@@ -10,8 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.deved.data.repository.PlacesRepository
 import com.deved.domain.Department
-import com.deved.domain.Places
-import com.deved.interactors.GetAllPlaces
+import com.deved.interactors.GetAllDepartment
 import com.deved.myepxinperu.data.server.FirebasePlacesDataSource
 import com.deved.myepxinperu.databinding.FragmentHomeBinding
 import com.deved.myepxinperu.ui.common.getViewModel
@@ -31,7 +30,7 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         setUpViewModel()
-        viewmodel.fetchPlaces()
+        viewmodel.fetchDepartment()
         attachViewModelObservers()
         return binding.root
     }
@@ -45,7 +44,7 @@ class HomeFragment : Fragment() {
         viewmodel = getViewModel {
             firebaseFirestore = FirebaseFirestore.getInstance()
             val useCase =
-                GetAllPlaces(PlacesRepository(FirebasePlacesDataSource(firebaseFirestore)))
+                GetAllDepartment(PlacesRepository(FirebasePlacesDataSource(firebaseFirestore)))
             HomeViewModel(useCase)
         }
     }
@@ -56,7 +55,7 @@ class HomeFragment : Fragment() {
         viewmodel.onMessageError.observe(viewLifecycleOwner, onMessageErrorObserver)
     }
 
-    private val placesObserver = Observer<List<Places>> {
+    private val placesObserver = Observer<List<Department>> {
         it?.let { places ->
             adapter.places = it
         }
@@ -70,11 +69,11 @@ class HomeFragment : Fragment() {
         activity?.toast(it.toString())
     }
 
-    private fun getDepartment(): (Places) -> Unit {
+    private fun getDepartment(): (Department) -> Unit {
         return { goToDetail(it) }
     }
 
-    private fun goToDetail(it: Places) {
+    private fun goToDetail(it: Department) {
         listener.goToDetail(it)
     }
 
@@ -88,6 +87,6 @@ class HomeFragment : Fragment() {
     }
 
     interface HomeFragmentListener{
-        fun goToDetail(it: Places)
+        fun goToDetail(it: Department)
     }
 }
