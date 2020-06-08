@@ -10,7 +10,7 @@ import com.deved.myepxinperu.databinding.ItemPlacesBinding
 import com.deved.myepxinperu.ui.common.basicDiffUtil
 import com.deved.myepxinperu.ui.common.inflate
 
-class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(private val listener:(Department)->Unit) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     var places: List<Department> by basicDiffUtil(
         emptyList(), { old, new -> old.name == new.name }
@@ -23,7 +23,11 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     override fun getItemCount(): Int = places.size
 
     override fun onBindViewHolder(holder: HomeAdapter.ViewHolder, position: Int) {
-        holder.bind(places[position])
+        val department = places[position]
+        holder.bind(department)
+        holder.itemView.setOnClickListener {
+            listener.invoke(department)
+        }
     }
 
     class ViewHolder(view: View) :
