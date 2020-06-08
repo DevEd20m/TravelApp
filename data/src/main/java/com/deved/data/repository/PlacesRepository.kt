@@ -1,11 +1,11 @@
 package com.deved.data.repository
 
 import com.deved.data.common.DataResponse
-import com.deved.data.source.RemoteDataSource
+import com.deved.data.source.PlaceDataSource
 import com.deved.domain.Department
 import com.deved.domain.Places
 
-class PlacesRepository(private val remoteDataSource: RemoteDataSource) {
+class PlacesRepository(private val remoteDataSource: PlaceDataSource) {
 
     suspend fun getAllPlaces(): DataResponse<List<Department>> {
         return remoteDataSource.fetchAllPlaces()
@@ -13,5 +13,7 @@ class PlacesRepository(private val remoteDataSource: RemoteDataSource) {
     suspend fun registerExp(place:Department):DataResponse<String>{
         return remoteDataSource.registerExp(place)
     }
-
+    suspend fun getDetailPlace(touristId : Int):DataResponse<Places>{
+        return remoteDataSource.getDetailPlace(touristId)
+    }
 }

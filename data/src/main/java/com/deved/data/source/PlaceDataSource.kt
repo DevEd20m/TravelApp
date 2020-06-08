@@ -5,7 +5,8 @@ import com.deved.domain.Department
 import com.deved.domain.Places
 import com.deved.domain.User
 
-interface RemoteDataSource {
+interface PlaceDataSource {
     suspend fun fetchAllPlaces(): DataResponse<List<Department>>
     suspend fun registerExp(place:Department):DataResponse<String>
+    suspend fun getDetailPlace(touristId:Int):DataResponse<Places>
 }

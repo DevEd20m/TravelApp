@@ -1,7 +1,7 @@
 package com.deved.myepxinperu.data.server
 
 import com.deved.data.common.DataResponse
-import com.deved.data.source.RemoteDataSource
+import com.deved.data.source.PlaceDataSource
 import com.deved.domain.Department
 import com.deved.domain.Places
 import com.deved.myepxinperu.R
@@ -12,7 +12,7 @@ import kotlinx.coroutines.tasks.await
 
 class FirebasePlacesDataSource(
     private val firebaseFirestore: FirebaseFirestore
-) : RemoteDataSource {
+) : PlaceDataSource {
 
     override suspend fun fetchAllPlaces(): DataResponse<List<Department>> {
         return try {
@@ -55,6 +55,19 @@ class FirebasePlacesDataSource(
                 .collection("TouristDestination")
                 .document(data.place!!.name!!).set(department)
             DataResponse.Success(UiContext.getString(R.string.success_registered_shared))
+        } catch (e: FirebaseFirestoreException) {
+            DataResponse.ExceptionError(e)
+        } catch (e: Exception) {
+            DataResponse.ExceptionError(e)
+        }
+    }
+
+    override suspend fun getDetailPlace(touristId: Int): DataResponse<Places> {
+        return try {
+            val result = firebaseFirestore.collection("Department")
+                .document("AYACUCHO").collection("TouristDestination")
+                .document("Wari").get().await()
+            DataResponse.Success(result.toObject(Places::class.java))
         } catch (e: FirebaseFirestoreException) {
             DataResponse.ExceptionError(e)
         } catch (e: Exception) {
