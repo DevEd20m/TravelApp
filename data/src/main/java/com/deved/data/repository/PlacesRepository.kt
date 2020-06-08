@@ -13,7 +13,7 @@ class PlacesRepository(private val remoteDataSource: PlaceDataSource) {
     suspend fun registerExp(place:Department):DataResponse<String>{
         return remoteDataSource.registerExp(place)
     }
-    suspend fun getDetailPlace(touristId : Int):DataResponse<Places>{
-        return remoteDataSource.getDetailPlace(touristId)
+    suspend fun getDetailPlace(placeName : String):DataResponse<Places>{
+        return remoteDataSource.getDetailPlace(placeName)
     }
 }

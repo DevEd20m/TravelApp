@@ -8,5 +8,5 @@ import com.deved.domain.User
 interface PlaceDataSource {
     suspend fun fetchAllPlaces(): DataResponse<List<Places>>
     suspend fun registerExp(place:Department):DataResponse<String>
-    suspend fun getDetailPlace(touristId:Int):DataResponse<Places>
+    suspend fun getDetailPlace(placeName:String):DataResponse<Places>
 }

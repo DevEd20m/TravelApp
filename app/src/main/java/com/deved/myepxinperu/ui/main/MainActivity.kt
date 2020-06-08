@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.HomeFragmentListener {
         }.commit()
     }
     override fun goToDetail(it: Places) {
-        changeFragment(DetailFragment.newInstance(1))
+        changeFragment(DetailFragment.newInstance(it.name))
     }
 
     override fun onDestroy() {

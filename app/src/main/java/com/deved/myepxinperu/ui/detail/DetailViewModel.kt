@@ -18,13 +18,10 @@ class DetailViewModel(private val useCase:GetDetailPlace) : ScopeViewModel() {
     private  var _place = MutableLiveData<Places>()
     val place: LiveData<Places> get() = _place
 
-    init {
-        getDetailPlace(1)
-    }
-    private fun getDetailPlace(touristId:Int){
+    fun getDetailPlace(placeName:String){
         launch {
             _isViewLoading.postValue(true)
-            doActionGetDetail(useCase.invoke(touristId))
+            doActionGetDetail(useCase.invoke(placeName))
             _isViewLoading.postValue(false)
         }
     }

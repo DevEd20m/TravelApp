@@ -28,6 +28,7 @@ class DetailFragment : Fragment() {
             val useCase = GetDetailPlace(PlacesRepository(FirebasePlacesDataSource(fireStore)))
             DetailViewModel(useCase)
         }
+        placeName?.let { viewmodel.getDetailPlace(it) }
     }
 
     override fun onCreateView(
@@ -58,7 +59,7 @@ class DetailFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(placeName: String) = DetailFragment().apply {
+        fun newInstance(placeName: String?) = DetailFragment().apply {
             arguments = Bundle().apply {
                 putString(mPlaceName, placeName)
             }

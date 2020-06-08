@@ -53,7 +53,7 @@ class FirebasePlacesDataSource(
         }
     }
 
-    override suspend fun getDetailPlace(touristId: Int): DataResponse<Places> {
+    override suspend fun getDetailPlace(placeName: String): DataResponse<Places> {
         return try {
             val result = firebaseFirestore.collection("Department")
                 .document("AYACUCHO").collection("TouristDestination")
