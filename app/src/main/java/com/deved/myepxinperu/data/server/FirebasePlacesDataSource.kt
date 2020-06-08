@@ -5,6 +5,10 @@ import com.deved.data.source.PlaceDataSource
 import com.deved.domain.Department
 import com.deved.domain.Places
 import com.deved.myepxinperu.R
+import com.deved.myepxinperu.data.server.mapper.DepartmentMapper
+import com.deved.myepxinperu.data.server.mapper.PlacesMapper
+import com.deved.myepxinperu.data.server.model.DepartmentServer
+import com.deved.myepxinperu.data.server.model.PlacesServer
 import com.deved.myepxinperu.ui.common.UiContext
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -67,7 +71,7 @@ class FirebasePlacesDataSource(
             val result = firebaseFirestore.collection("Department")
                 .document("AYACUCHO").collection("TouristDestination")
                 .document("Wari").get().await()
-            DataResponse.Success(result.toObject(Places::class.java))
+            DataResponse.Success(PlacesMapper().mapToEntity(result.toObject(PlacesServer::class.java)))
         } catch (e: FirebaseFirestoreException) {
             DataResponse.ExceptionError(e)
         } catch (e: Exception) {
