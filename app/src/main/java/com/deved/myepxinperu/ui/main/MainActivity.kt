@@ -3,10 +3,14 @@ package com.deved.myepxinperu.ui.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
+import androidx.fragment.app.Fragment
+import com.deved.domain.Department
 import com.deved.myepxinperu.R
 import com.deved.myepxinperu.databinding.ActivityMainBinding
+import com.deved.myepxinperu.ui.detail.DetailFragment
+import com.deved.myepxinperu.ui.home.HomeFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), HomeFragment.HomeFragmentListener {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +41,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return 0
+    }
+
+    private fun changeFragment(fragment:Fragment){
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayoutMain,fragment)
+            addToBackStack(null)
+        }.commit()
+    }
+    override fun goToDetail(it: Department) {
+        changeFragment(DetailFragment.newInstance(1))
     }
 
     override fun onDestroy() {
