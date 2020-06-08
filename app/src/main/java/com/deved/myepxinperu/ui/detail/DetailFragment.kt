@@ -19,10 +19,10 @@ class DetailFragment : Fragment() {
     private lateinit var fireStore: FirebaseFirestore
     private lateinit var viewmodel: DetailViewModel
     private lateinit var binding: FragmentDetailBinding
-    private var touristId: Int? = null
+    private var placeName: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        touristId = arguments?.getInt(mTouristId, 0)
+        placeName = arguments?.getString(mPlaceName, "")
         viewmodel = getViewModel {
             fireStore = FirebaseFirestore.getInstance()
             val useCase = GetDetailPlace(PlacesRepository(FirebasePlacesDataSource(fireStore)))
@@ -58,12 +58,12 @@ class DetailFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(touristId: Int) = DetailFragment().apply {
+        fun newInstance(placeName: String) = DetailFragment().apply {
             arguments = Bundle().apply {
-                putInt(mTouristId, touristId)
+                putString(mPlaceName, placeName)
             }
         }
 
-        private const val mTouristId = "mTouristId"
+        private const val mPlaceName = "mPlaceName"
     }
 }
