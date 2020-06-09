@@ -9,5 +9,6 @@ interface PlaceDataSource {
     suspend fun fetchAllPlaces(): DataResponse<List<Places>>
     suspend fun fetchAllDepartment(): DataResponse<List<Department>>
     suspend fun getDetailPlace(departmentName: String, placeName: String): DataResponse<Places>
+    suspend fun getDetailUserPublishedPlace(userId: String?):DataResponse<User>
     suspend fun registerExp(data: Department, userId: String): DataResponse<String>
 }

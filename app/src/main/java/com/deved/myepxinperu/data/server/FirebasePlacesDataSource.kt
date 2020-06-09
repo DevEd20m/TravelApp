@@ -4,9 +4,12 @@ import com.deved.data.common.DataResponse
 import com.deved.data.source.PlaceDataSource
 import com.deved.domain.Department
 import com.deved.domain.Places
+import com.deved.domain.User
 import com.deved.myepxinperu.R
 import com.deved.myepxinperu.data.server.mapper.PlacesMapper
+import com.deved.myepxinperu.data.server.mapper.UserMapper
 import com.deved.myepxinperu.data.server.model.PlacesServer
+import com.deved.myepxinperu.data.server.model.UserServer
 import com.deved.myepxinperu.ui.common.UiContext
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -76,6 +79,18 @@ class FirebasePlacesDataSource(
                 .document(departmentName).collection("TouristDestination")
                 .document(placeName).get().await()
             DataResponse.Success(PlacesMapper().mapToEntity(result.toObject(PlacesServer::class.java)))
+        } catch (e: FirebaseFirestoreException) {
+            DataResponse.ExceptionError(e)
+        } catch (e: Exception) {
+            DataResponse.ExceptionError(e)
+        }
+    }
+
+    override suspend fun getDetailUserPublishedPlace(userId: String?): DataResponse<User> {
+        return try {
+            val result = firebaseFirestore.collection("Users")
+                .document(userId.toString()).get().await()
+            DataResponse.Success(UserMapper().mapToEntity(result.toObject(UserServer::class.java)))
         } catch (e: FirebaseFirestoreException) {
             DataResponse.ExceptionError(e)
         } catch (e: Exception) {
