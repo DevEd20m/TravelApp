@@ -54,6 +54,7 @@
                 android:id="@+id/imageViewBackgroundAvatar"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:background="@drawable/ic_launcher_background"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,6 +63,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                style="@style/TextViewSubTitle"
+                android:text="Edmundo prad"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageViewBackgroundAvatar"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -71,6 +75,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageViewBackgroundAvatar"
                 app:layout_constraintTop_toBottomOf="@+id/textViewNameAvatar" />

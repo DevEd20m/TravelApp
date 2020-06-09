@@ -11,9 +11,12 @@ import androidx.lifecycle.Observer
 import coil.api.load
 import com.deved.data.repository.PlacesRepository
 import com.deved.domain.Places
+import com.deved.domain.User
 import com.deved.interactors.GetDetailPlace
+import com.deved.interactors.GetDetailUserPosted
 import com.deved.myepxinperu.data.server.FirebasePlacesDataSource
 import com.deved.myepxinperu.databinding.FragmentDetailBinding
+import com.deved.myepxinperu.ui.common.UserSingleton
 import com.deved.myepxinperu.ui.common.getViewModel
 import com.deved.myepxinperu.ui.common.toast
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,6 +33,7 @@ class DetailFragment : Fragment() {
         placeName = arguments?.getString(mPlaceName, "")
         setUpViewModel()
         viewmodel.getDetailPlace(departmentName!!,placeName!!)
+        viewmodel.getDetailUserPosted(UserSingleton.getUid())
     }
 
     override fun onCreateView(
@@ -45,7 +49,8 @@ class DetailFragment : Fragment() {
         viewmodel = getViewModel {
             fireStore = FirebaseFirestore.getInstance()
             val useCase = GetDetailPlace(PlacesRepository(FirebasePlacesDataSource(fireStore)))
-            DetailViewModel(useCase)
+            val userPosted = GetDetailUserPosted(PlacesRepository(FirebasePlacesDataSource(fireStore)))
+            DetailViewModel(useCase,userPosted)
         }
     }
 
@@ -54,6 +59,7 @@ class DetailFragment : Fragment() {
         viewmodel.onErrorMessage.observe(this, onErrorMessageObserver)
         viewmodel.onSuccessMessage.observe(this, onSuccessMessageObserver)
         viewmodel.place.observe(this, placeObserver)
+        viewmodel.userPosted.observe(this, userPostedObserver)
     }
 
     private val isViewLoadingObserver = Observer<Boolean> {
@@ -68,7 +74,14 @@ class DetailFragment : Fragment() {
     private val placeObserver = Observer<Places> {
         with(binding){
             imageViewBackgroundDetail.load(it.picturesOne)
+            textViewDatePublished.text = it.createAt
+            textViewDescriptionPlace.text = it.description
             setUpToolbar(it.name)
+        }
+    }
+    private val userPostedObserver = Observer<User> {
+        with(binding){
+            textViewNameAvatar.text = it.name?.plus(" ").plus(it.lastName)
         }
     }
 
