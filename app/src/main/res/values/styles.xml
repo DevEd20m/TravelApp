@@ -8,4 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="TextViewTitleDetail" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">24dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="TextViewSubTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/colorNegro</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

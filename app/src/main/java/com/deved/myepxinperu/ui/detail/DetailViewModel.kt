@@ -28,7 +28,7 @@ class DetailViewModel(private val useCase:GetDetailPlace) : ScopeViewModel() {
 
     private fun doActionGetDetail(invoke: DataResponse<Places>) {
         when(invoke){
-            is DataResponse.Success -> _onSuccessMessage.postValue(invoke.data)
+            is DataResponse.Success -> _place.value = invoke.data
             is DataResponse.NetworkError -> _onErrorMessage.postValue(invoke.error)
             is DataResponse.TimeOutServerError -> _onErrorMessage.postValue(invoke.error)
             is DataResponse.ExceptionError -> _onErrorMessage.postValue(invoke.errorCode.message)

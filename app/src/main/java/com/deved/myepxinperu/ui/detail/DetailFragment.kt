@@ -1,5 +1,6 @@
 package com.deved.myepxinperu.ui.detail
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,9 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import coil.api.load
 import com.deved.data.repository.PlacesRepository
+import com.deved.domain.Places
 import com.deved.interactors.GetDetailPlace
 import com.deved.myepxinperu.data.server.FirebasePlacesDataSource
 import com.deved.myepxinperu.databinding.FragmentDetailBinding
@@ -25,11 +28,7 @@ class DetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
         departmentName = arguments?.getString(mDepartmentName, "")
         placeName = arguments?.getString(mPlaceName, "")
-        viewmodel = getViewModel {
-            fireStore = FirebaseFirestore.getInstance()
-            val useCase = GetDetailPlace(PlacesRepository(FirebasePlacesDataSource(fireStore)))
-            DetailViewModel(useCase)
-        }
+        setUpViewModel()
         viewmodel.getDetailPlace(departmentName!!,placeName!!)
     }
 
@@ -42,11 +41,19 @@ class DetailFragment : Fragment() {
         return binding.root
     }
 
+    private fun setUpViewModel() {
+        viewmodel = getViewModel {
+            fireStore = FirebaseFirestore.getInstance()
+            val useCase = GetDetailPlace(PlacesRepository(FirebasePlacesDataSource(fireStore)))
+            DetailViewModel(useCase)
+        }
+    }
+
     private fun setUpViewModelObservers() {
         viewmodel.isViewLoading.observe(this, isViewLoadingObserver)
         viewmodel.onErrorMessage.observe(this, onErrorMessageObserver)
         viewmodel.onSuccessMessage.observe(this, onSuccessMessageObserver)
-
+        viewmodel.place.observe(this, placeObserver)
     }
 
     private val isViewLoadingObserver = Observer<Boolean> {
@@ -57,6 +64,17 @@ class DetailFragment : Fragment() {
     }
     private val onSuccessMessageObserver = Observer<Any> {
         activity?.toast(it.toString())
+    }
+    private val placeObserver = Observer<Places> {
+        with(binding){
+            imageViewBackgroundDetail.load(it.picturesOne)
+            setUpToolbar(it.name)
+        }
+    }
+
+    private fun setUpToolbar(tit:String?){
+        binding.toolbarDetail.setTitle(tit)
+        binding.toolbarDetail.setTitleTextColor(Color.WHITE)
     }
 
     companion object {
