@@ -3,6 +3,7 @@ package com.deved.myepxinperu.ui.security.logIn
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.deved.data.common.DataResponse
+import com.deved.domain.User
 import com.deved.interactors.LogIn
 import com.deved.myepxinperu.R
 import com.deved.myepxinperu.coroutines.ScopeViewModel
@@ -15,8 +16,8 @@ class LoginViewModel(private val useCase: LogIn) : ScopeViewModel() {
     val isViewLoading: LiveData<Boolean> get() = _isViewLoading
     private var _onMessageError = MutableLiveData<Any>()
     val onMessageError: LiveData<Any> get() = _onMessageError
-    private var _onMessageSuccess = MutableLiveData<Any>()
-    val onMessageSuccess: LiveData<Any> get() = _onMessageSuccess
+    private var _onMessageSuccess = MutableLiveData<User>()
+    val onMessageSuccess: LiveData<User> get() = _onMessageSuccess
 
     fun validateForLogIn(email: String, password: String) {
         if (!email.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputEmail))
@@ -32,9 +33,9 @@ class LoginViewModel(private val useCase: LogIn) : ScopeViewModel() {
         }
     }
 
-    private fun doAction(invoke: DataResponse<String>) {
+    private fun doAction(invoke: DataResponse<User>) {
         when (invoke) {
-            is DataResponse.Success -> _onMessageSuccess.postValue(UiContext.getString(R.string.success_auth))
+            is DataResponse.Success -> _onMessageSuccess.postValue(invoke.data)
             is DataResponse.NetworkError -> _onMessageError.postValue(invoke.error)
             is DataResponse.TimeOutServerError -> _onMessageError.postValue(invoke.error)
             is DataResponse.ExceptionError -> _onMessageError.postValue(invoke.errorCode.message)

@@ -32,14 +32,14 @@ class ShareViewModel(
     fun validateRegisterExp(
         department: String, touristName: String,
         touristDescription: String,
-        pictureOne: String, pictureSecond: String
+        pictureOne: String, pictureSecond: String,userId:String
     ) {
         if (!department.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDeparment))
         else if (!touristName.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputTouristName))
         else if (!touristDescription.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDescription))
         else if (!pictureOne.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureOne))
         else if (!pictureSecond.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureSecond))
-        else shareExp(department,touristName,touristDescription, pictureOne, pictureSecond ,"")
+        else shareExp(department,touristName,touristDescription, pictureOne, pictureSecond ,"",userId)
     }
 
     fun getPicture() {
@@ -54,7 +54,8 @@ class ShareViewModel(
         touristDescription: String,
         one: String,
         second: String,
-        createAt:String
+        createAt:String,
+        userId:String
     ) {
         launch {
             _isViewLoading.postValue(true)
@@ -62,7 +63,7 @@ class ShareViewModel(
             val second = withContext(Dispatchers.IO) { uploadPicture.invoke(second) }
             val resultFirst = uploadDoAction(one).toString()
             val resultSecond = uploadDoAction(second).toString()
-            doAction(useCase.invoke(Department(department,Places(touristName,touristDescription,resultFirst,resultSecond,createAt))))
+            doAction(useCase.invoke(Department(department,Places(touristName,touristDescription,resultFirst,resultSecond,createAt)),userId))
             _isViewLoading.postValue(false)
         }
     }

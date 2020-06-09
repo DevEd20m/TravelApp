@@ -47,7 +47,7 @@ class FirebasePlacesDataSource(
         }
     }
 
-    override suspend fun registerExp(data: Department): DataResponse<String> {
+    override suspend fun registerExp(data: Department,userId:String): DataResponse<String> {
         return try {
             val department = hashMapOf<String, Any?>()
             with(data.place!!) {
@@ -56,6 +56,7 @@ class FirebasePlacesDataSource(
                 department["pictureOne"] = picturesOne
                 department["pictureSecond"] = picturesSecond
                 department["createAt"] = createAt
+                department["userId"] = userId
             }
 
             firebaseFirestore.document("Department/${data.name!!.toUpperCase()}")

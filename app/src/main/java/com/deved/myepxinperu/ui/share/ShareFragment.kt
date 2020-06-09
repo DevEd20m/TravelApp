@@ -19,6 +19,7 @@ import com.deved.myepxinperu.data.AndroidPermissionsChecker
 import com.deved.myepxinperu.data.server.FirebasePictureDataSource
 import com.deved.myepxinperu.data.server.FirebasePlacesDataSource
 import com.deved.myepxinperu.databinding.FragmentShareBinding
+import com.deved.myepxinperu.ui.common.UserSingleton
 import com.deved.myepxinperu.ui.common.getViewModel
 import com.deved.myepxinperu.ui.common.toast
 import com.deved.myepxinperu.ui.model.Picture
@@ -77,7 +78,8 @@ class ShareFragment : Fragment() {
 
             val one = picturesArray[0]
             val second = picturesArray[1]
-            viewModel.validateRegisterExp(department,touristName,touristDescription,one.picture.toString(),second.picture.toString())
+            val userId = UserSingleton.getUid()
+            viewModel.validateRegisterExp(department,touristName,touristDescription,one.picture.toString(),second.picture.toString(),userId)
         }
 
         binding.imageButtonAdd.setOnClickListener {

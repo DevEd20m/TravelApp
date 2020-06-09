@@ -17,9 +17,29 @@ class FirebaseSecurityDataSource(
 ) : SecurityDataSource {
     override suspend fun logIn(user: String, password: String): DataResponse<String> {
         return try {
-            firebaseAuth.signInWithEmailAndPassword(user, password).await()
-            DataResponse.Success(UiContext.getString(R.string.success_auth))
+            val result = firebaseAuth.signInWithEmailAndPassword(user, password).await()
+            result.user?.uid
+            DataResponse.Success(result.user?.uid)
         } catch (e: FirebaseAuthException) {
+            DataResponse.ExceptionError(e)
+        } catch (e: Exception) {
+            DataResponse.ExceptionError(e)
+        }
+    }
+
+    override suspend fun getProfile(userId: String?): DataResponse<User> {
+        return try {
+            val result = firebaseFirestore.collection("Users")
+                .document(userId.toString()).get().await()
+            val user = User(
+                result.id,
+                result.getString("name"),
+                result.getString("lastName"),
+                result.getString("email"),
+                null, null
+            )
+            DataResponse.Success(user)
+        } catch (e: FirebaseFirestoreException) {
             DataResponse.ExceptionError(e)
         } catch (e: Exception) {
             DataResponse.ExceptionError(e)
@@ -28,11 +48,14 @@ class FirebaseSecurityDataSource(
 
     override suspend fun registerUser(user: User): DataResponse<String> {
         return try {
-            firebaseAuth.createUserWithEmailAndPassword(user.email, user.password).await()
+            firebaseAuth.createUserWithEmailAndPassword(
+                user.email.toString(),
+                user.password.toString()
+            ).await()
             val userServer = hashMapOf<String, Any>()
-            userServer["email"] = user.email
-            userServer["name"] = user.name
-            userServer["lastName"] = user.lastName
+            userServer["email"] = user.email.toString()
+            userServer["name"] = user.name.toString()
+            userServer["lastName"] = user.lastName.toString()
             firebaseFirestore.collection("Users").document(firebaseAuth.currentUser!!.uid)
                 .set(userServer).await()
             DataResponse.Success(UiContext.getString(R.string.success_registered_user))
