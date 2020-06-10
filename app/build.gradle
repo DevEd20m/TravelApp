@@ -58,4 +58,5 @@ dependencies {
     kapt roomCompiler.values()
     testImplementation test.values()
     androidTestImplementation testImplementation.values()
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 }

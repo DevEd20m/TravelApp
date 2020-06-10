@@ -10,20 +10,20 @@ class PictureRepository(
     private val permissionsChecker: PermissionsChecker
 ) {
     fun fetchPicture() {
-        return if (permissionsChecker.check(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)) {
-            pictureDataSource.fetchPicture()
-        } else {
-            permissionsChecker.requestPermissionsChecker()
-        }
+        return if (permissionsChecker.checkPermission(READ_EXTERNAL_STORAGE)
+            and permissionsChecker.checkPermission(WRITE_EXTERNAL_STORAGE)
+        ) pictureDataSource.fetchPicture() else permissionsChecker.requestPermissionsStorage()
     }
-    suspend fun uploadPicture(uri:String):DataResponse<String>{
+
+    suspend fun uploadPicture(uri: String): DataResponse<String> {
         return pictureDataSource.uploadPicture(uri)
     }
 }
 
 interface PermissionsChecker {
-    enum class Permissions { READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE }
+    enum class Permissions { READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, COARSE_LOCATION }
 
-    fun check(permission: Permissions, writeExternalStorage: Permissions): Boolean
-    fun requestPermissionsChecker()
+    fun checkPermission(permission: Permissions): Boolean
+    fun requestPermissionsStorage()
+    fun requestPermissionsLocation()
 }
