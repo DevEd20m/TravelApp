@@ -101,6 +101,9 @@ allprojects {
         roomCompiler = [
                 roomCompiler: 'androidx.room:room-compiler:2.2.5',
         ]
+        work = [
+                workManager: 'androidx.work:work-runtime-ktx:2.3.4'
+        ]
 
         test = [
                 junit: 'junit:junit:4.12',

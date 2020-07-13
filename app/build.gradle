@@ -49,6 +49,7 @@ dependencies {
     implementation androidLibs.values()
     implementation lifecycle.values()
     implementation coroutines.values()
+    implementation work.values()
     implementation androidPlayService.values()
     implementation coil.values()
     implementation firebase.values()
