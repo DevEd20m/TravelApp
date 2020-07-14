@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class UserDb(
     @PrimaryKey(autoGenerate = true)
-    val id: String?,
+    val id: Int?,
     @ColumnInfo(name = "longitude")
     val longitude: Double?,
     @ColumnInfo(name = "latitude")

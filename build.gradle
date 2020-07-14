@@ -91,7 +91,7 @@ allprojects {
         firebase = [
                 firebaseStorage: 'com.google.firebase:firebase-storage:19.1.0',
                 firebaseAuth   : 'com.google.firebase:firebase-auth:19.1.0',
-                firebaseKtx    : 'com.google.firebase:firebase-firestore-ktx:21.4.1'
+                firebaseKtx    : 'com.google.firebase:firebase-firestore-ktx:21.4.0'
         ]
 
         room = [

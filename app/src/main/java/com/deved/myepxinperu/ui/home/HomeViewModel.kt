@@ -3,13 +3,16 @@ package com.deved.myepxinperu.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.deved.data.common.DataResponse
+import com.deved.data.repository.PermissionsChecker
 import com.deved.domain.Department
 import com.deved.interactors.GetAllDepartment
+import com.deved.interactors.RequestPermission
 import com.deved.myepxinperu.coroutines.ScopeViewModel
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val fetchDepartment: GetAllDepartment
+    private val fetchDepartment: GetAllDepartment,
+    private val permission: RequestPermission
 ) : ScopeViewModel() {
     private var _places = MutableLiveData<List<Department>>().apply { value = null }
     val places: LiveData<List<Department>> get() = _places
@@ -17,6 +20,8 @@ class HomeViewModel(
     val isViewLoading: LiveData<Boolean> get() = _isViewLoading
     private var _onMessageError = MutableLiveData<Any>()
     val onMessageError: LiveData<Any> get() = _onMessageError
+    private  var _isPermissionGaranted = MutableLiveData<Boolean>()
+    val isPermissionGaranted: LiveData<Boolean> get() = _isPermissionGaranted
 
     fun fetchDepartment() = launch {
         _isViewLoading.postValue(true)
@@ -31,5 +36,13 @@ class HomeViewModel(
             is DataResponse.TimeOutServerError -> _onMessageError.postValue(invoke.error)
             is DataResponse.ExceptionError -> _onMessageError.postValue(invoke.errorCode)
         }
+    }
+
+    fun validatePermissions(){
+        _isPermissionGaranted.postValue(permission.responseInvoke())
+    }
+
+    fun requestPermission(){
+        permission.requestInvoke()
     }
 }
