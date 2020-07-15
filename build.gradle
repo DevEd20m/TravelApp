@@ -104,13 +104,24 @@ allprojects {
         work = [
                 workManager: 'androidx.work:work-runtime-ktx:2.3.4'
         ]
+        koin = [
+                koin         : "org.koin:koin-android:2.1.5",
+                koinScope    : "org.koin:koin-android-scope:2.1.5",
+                koinViewModel: "org.koin:koin-android-viewmodel:2.1.5",
+        ]
+        timber = [
+                timber: 'com.jakewharton.timber:timber:4.7.1',
+        ]
 
         test = [
-                junit: 'junit:junit:4.12',
+                junit   : 'junit:junit:4.12',
+                koinTest: 'org.koin:koin-test:2.1.1'
         ]
+
         testImplementation = [
                 junitImplementation      : 'androidx.test.ext:junit:1.1.1',
-                androidTestImplementation: 'androidx.test.espresso:espresso-core:3.2.0'
+                androidTestImplementation: 'androidx.test.espresso:espresso-core:3.2.0',
+                koinTest                 : 'org.koin:koin-test:2.1.1',
         ]
 
     }
