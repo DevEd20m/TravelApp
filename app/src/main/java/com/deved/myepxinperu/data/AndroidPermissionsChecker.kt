@@ -18,4 +18,5 @@ private fun PermissionsChecker.Permissions.toAndroidId() = when (this) {
     PermissionsChecker.Permissions.READ_EXTERNAL_STORAGE -> Manifest.permission.READ_EXTERNAL_STORAGE
     PermissionsChecker.Permissions.WRITE_EXTERNAL_STORAGE -> Manifest.permission.WRITE_EXTERNAL_STORAGE
     PermissionsChecker.Permissions.COARSE_LOCATION -> Manifest.permission.ACCESS_COARSE_LOCATION
+
 }

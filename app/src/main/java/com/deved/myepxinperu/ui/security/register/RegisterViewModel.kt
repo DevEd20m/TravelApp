@@ -41,7 +41,7 @@ class RegisterViewModel(private val registerUser: RegisterUser) : ScopeViewModel
             is DataResponse.NetworkError -> _onMessageError.postValue(invoke.error)
             is DataResponse.TimeOutServerError -> _onMessageError.postValue(invoke.error)
             is DataResponse.ExceptionError -> _onMessageError.postValue(invoke.errorCode)
-            is DataResponse.NetworkError -> _onMessageError.postValue(invoke.error)
+            is DataResponse.ServerError -> _onMessageError.postValue(invoke.errorCode)
         }
     }
 }

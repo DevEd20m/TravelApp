@@ -34,7 +34,7 @@ class MyExpInPeruApplication : Application() {
     }
 
     private fun setUpWorker() {
-        val repeatingRequest = PeriodicWorkRequestBuilder<SaveLocationWorker>(15, TimeUnit.MINUTES)
+        val repeatingRequest = PeriodicWorkRequestBuilder<SaveLocationWorker>(SaveLocationWorker.TIME_PERIODIC_TASK, TimeUnit.MINUTES)
             .build()
         WorkManager.getInstance(this).enqueue(repeatingRequest)
     }

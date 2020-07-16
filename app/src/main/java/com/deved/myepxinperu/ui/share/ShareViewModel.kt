@@ -30,7 +30,7 @@ class ShareViewModel(
     val onMessageSuccess: LiveData<Any> get() = _onMessageSuccess
     private var _permission = MutableLiveData<RequestPermission>()
     val permission: LiveData<RequestPermission> get() = _permission
-    private  var _takePicture = MutableLiveData<Boolean>()
+    private var _takePicture = MutableLiveData<Boolean>()
     val takePicture: LiveData<Boolean> get() = _takePicture
 
     fun validateRegisterExp(

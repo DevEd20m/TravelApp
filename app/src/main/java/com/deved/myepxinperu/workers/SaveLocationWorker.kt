@@ -24,6 +24,7 @@ class SaveLocationWorker(context: Context, workerParams: WorkerParameters) :
 
     companion object {
         const val KEY_ACTIVITY = "KEY_ACTIVITY"
+        const val TIME_PERIODIC_TASK : Long = 15
         val WORK_NAME = SaveLocationWorker::class.java.name
     }
 }

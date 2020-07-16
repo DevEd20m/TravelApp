@@ -48,12 +48,16 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     private val onMessageSuccessObserver = Observer<Any> {
         toast(it.toString())
-        Thread.sleep(1000)
+        Thread.sleep(TIME_SLEEP)
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
 
     private val isViewLoadingObserver = Observer<Boolean> {
         binding.progressBarRegister.isVisible = it
+    }
+
+    companion object {
+        const val TIME_SLEEP: Long = 1000
     }
 }
