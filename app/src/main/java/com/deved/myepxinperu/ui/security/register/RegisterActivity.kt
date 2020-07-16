@@ -6,44 +6,28 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.deved.data.repository.SecurityRepository
-import com.deved.interactors.RegisterUser
 import com.deved.myepxinperu.R
-import com.deved.myepxinperu.data.server.FirebaseSecurityDataSource
 import com.deved.myepxinperu.databinding.ActivityRegisterBinding
-import com.deved.myepxinperu.ui.common.getViewModel
 import com.deved.myepxinperu.ui.common.toast
 import com.deved.myepxinperu.ui.security.logIn.LoginActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import org.koin.android.scope.lifecycleScope
+import org.koin.android.viewmodel.scope.viewModel
 
 class RegisterActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var fbFirestore: FirebaseFirestore
-    private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var viewmodel: RegisterViewModel
+    private val viewmodel: RegisterViewModel by lifecycleScope.viewModel(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setUpViewModel()
         setUpObserversViewModel()
         binding.materialButtonRegister.setOnClickListener(this)
     }
 
-    private fun setUpViewModel() {
-        viewmodel = getViewModel {
-            fbFirestore = FirebaseFirestore.getInstance()
-            firebaseAuth = FirebaseAuth.getInstance()
-            val useCase = RegisterUser(SecurityRepository(FirebaseSecurityDataSource(firebaseAuth, fbFirestore)))
-            RegisterViewModel(useCase)
-        }
-    }
-
     private fun setUpObserversViewModel() {
-        viewmodel.onMessageError.observe(this,onMessageErrorObserver)
-        viewmodel.onMessageSucces.observe(this,onMessageSuccessObserver)
-        viewmodel.isViewLoading.observe(this,isViewLoadingObserver)
+        viewmodel.onMessageError.observe(this, onMessageErrorObserver)
+        viewmodel.onMessageSucces.observe(this, onMessageSuccessObserver)
+        viewmodel.isViewLoading.observe(this, isViewLoadingObserver)
     }
 
     override fun onClick(button: View?) {
@@ -58,18 +42,18 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private val onMessageErrorObserver = Observer<Any>{
+    private val onMessageErrorObserver = Observer<Any> {
         toast(it.toString())
     }
 
-    private val onMessageSuccessObserver = Observer<Any>{
+    private val onMessageSuccessObserver = Observer<Any> {
         toast(it.toString())
         Thread.sleep(1000)
-        startActivity(Intent(this,LoginActivity::class.java))
+        startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
 
-    private val isViewLoadingObserver = Observer<Boolean>{
+    private val isViewLoadingObserver = Observer<Boolean> {
         binding.progressBarRegister.isVisible = it
     }
 }

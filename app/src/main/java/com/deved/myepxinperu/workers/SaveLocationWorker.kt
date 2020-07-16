@@ -4,23 +4,19 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.deved.data.repository.LocationRepository
 import com.deved.interactors.SaveLocation
-import com.deved.myepxinperu.data.dataBase.PlaceDataBase
-import com.deved.myepxinperu.data.dataBase.RoomUserDataSource
-import com.deved.myepxinperu.data.device.PlayServicesLocationDataSource
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class SaveLocationWorker(private val context: Context, workerParams: WorkerParameters) :
-    CoroutineWorker(context, workerParams) {
+class SaveLocationWorker(context: Context, workerParams: WorkerParameters) :
+    CoroutineWorker(context, workerParams), KoinComponent {
     override suspend fun doWork(): Result {
-        val dataSource = RoomUserDataSource(PlaceDataBase.getDatabaseInstance(applicationContext))
-        val playServices = PlayServicesLocationDataSource(applicationContext)
-        val database = SaveLocation(LocationRepository(dataSource, playServices))
+        val database: SaveLocation by inject()
         try {
-            Log.d("TAG","Se ejecutó la tarea")
+            Log.d("TAG", "Se ejecutó la tarea")
             database.invoke()
         } catch (e: Exception) {
-            Log.d("TAG","Se ejecutó la tarea sin éxito: ${e.message.toString()}")
+            Log.d("TAG", "Se ejecutó la tarea sin éxito: ${e.message.toString()}")
             return Result.failure()
         }
         return Result.success()

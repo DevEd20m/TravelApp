@@ -3,14 +3,14 @@ package com.deved.myepxinperu.ui.share
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.deved.data.common.DataResponse
+import com.deved.data.repository.PermissionsChecker
 import com.deved.domain.Department
 import com.deved.domain.Places
-import com.deved.domain.PlacesPicture
-import com.deved.interactors.GetPicture
 import com.deved.interactors.RegisterExp
 import com.deved.interactors.UploadPicture
 import com.deved.myepxinperu.R
 import com.deved.myepxinperu.coroutines.ScopeViewModel
+import com.deved.myepxinperu.ui.common.RequestPermission
 import com.deved.myepxinperu.ui.common.UiContext
 import com.deved.myepxinperu.ui.common.validate
 import kotlinx.coroutines.Dispatchers
@@ -19,8 +19,8 @@ import kotlinx.coroutines.withContext
 
 class ShareViewModel(
     private val useCase: RegisterExp,
-    private val useCasePicture: GetPicture,
-    private val uploadPicture: UploadPicture
+    private val uploadPicture: UploadPicture,
+    private val permissionChecker: PermissionsChecker
 ) : ScopeViewModel() {
     private var _isViewLoading = MutableLiveData<Boolean>()
     val isViewLoading: LiveData<Boolean> get() = _isViewLoading
@@ -28,34 +28,52 @@ class ShareViewModel(
     val onMessageError: LiveData<Any> get() = _onMessageError
     private var _onMessageSuccess = MutableLiveData<Any>()
     val onMessageSuccess: LiveData<Any> get() = _onMessageSuccess
+    private var _permission = MutableLiveData<RequestPermission>()
+    val permission: LiveData<RequestPermission> get() = _permission
+    private  var _takePicture = MutableLiveData<Boolean>()
+    val takePicture: LiveData<Boolean> get() = _takePicture
 
     fun validateRegisterExp(
         department: String, touristName: String,
         touristDescription: String,
-        pictureOne: String, pictureSecond: String,userId:String
+        pictureOne: String, pictureSecond: String, userId: String
     ) {
         if (!department.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDeparment))
         else if (!touristName.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputTouristName))
         else if (!touristDescription.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDescription))
         else if (!pictureOne.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureOne))
         else if (!pictureSecond.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureSecond))
-        else shareExp(department,touristName,touristDescription, pictureOne, pictureSecond ,"",userId)
+        else shareExp(
+            department,
+            touristName,
+            touristDescription,
+            pictureOne,
+            pictureSecond,
+            "",
+            userId
+        )
     }
 
     fun getPicture() {
-        launch {
-            useCasePicture.invoke()
+        if (permissionChecker.checkPermission(PermissionsChecker.Permissions.READ_EXTERNAL_STORAGE)
+            and permissionChecker.checkPermission(PermissionsChecker.Permissions.WRITE_EXTERNAL_STORAGE)
+        ) {
+            launch {
+                _takePicture.postValue(true)
+            }
+        } else {
+            _permission.value = RequestPermission.RequestStorage
         }
     }
 
     private fun shareExp(
-        department:String,
-        touristName:String,
+        department: String,
+        touristName: String,
         touristDescription: String,
         one: String,
         second: String,
-        createAt:String,
-        userId:String
+        createAt: String,
+        userId: String
     ) {
         launch {
             _isViewLoading.postValue(true)
@@ -63,7 +81,14 @@ class ShareViewModel(
             val second = withContext(Dispatchers.IO) { uploadPicture.invoke(second) }
             val resultFirst = uploadDoAction(one).toString()
             val resultSecond = uploadDoAction(second).toString()
-            doAction(useCase.invoke(Department(department,Places(touristName,touristDescription,resultFirst,resultSecond,createAt)),userId))
+            doAction(
+                useCase.invoke(
+                    Department(
+                        department,
+                        Places(touristName, touristDescription, resultFirst, resultSecond, createAt)
+                    ), userId
+                )
+            )
             _isViewLoading.postValue(false)
         }
     }

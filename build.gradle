@@ -105,9 +105,13 @@ allprojects {
                 workManager: 'androidx.work:work-runtime-ktx:2.3.4'
         ]
         koin = [
-                koin         : "org.koin:koin-android:2.1.5",
-                koinScope    : "org.koin:koin-android-scope:2.1.5",
-                koinViewModel: "org.koin:koin-android-viewmodel:2.1.5",
+                koin         : "org.koin:koin-android:2.1.6",
+                koinScope    : "org.koin:koin-android-scope:2.1.6",
+                koinViewModel: "org.koin:koin-android-viewmodel:2.1.6",
+                fragment: "org.koin:koin-androidx-fragment:2.1.6"
+        ]
+        dexter = [
+                dexter: "com.karumi:dexter:6.0.2"
         ]
         timber = [
                 timber: 'com.jakewharton.timber:timber:4.7.1',
