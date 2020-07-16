@@ -10,9 +10,11 @@ import com.deved.interactors.RegisterExp
 import com.deved.interactors.UploadPicture
 import com.deved.myepxinperu.R
 import com.deved.myepxinperu.coroutines.ScopeViewModel
+import com.deved.myepxinperu.ui.common.Event
 import com.deved.myepxinperu.ui.common.RequestPermission
 import com.deved.myepxinperu.ui.common.UiContext
 import com.deved.myepxinperu.ui.common.validate
+import com.deved.myepxinperu.ui.model.Picture
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,8 +32,10 @@ class ShareViewModel(
     val onMessageSuccess: LiveData<Any> get() = _onMessageSuccess
     private var _permission = MutableLiveData<RequestPermission>()
     val permission: LiveData<RequestPermission> get() = _permission
-    private var _takePicture = MutableLiveData<Boolean>()
-    val takePicture: LiveData<Boolean> get() = _takePicture
+    private var _takePicture = MutableLiveData<Event<Boolean>>()
+    val takePicture: LiveData<Event<Boolean>> get() = _takePicture
+    private  var _pictures = MutableLiveData<MutableList<Picture>>().apply { value = mutableListOf() }
+    val pictures: LiveData<MutableList<Picture>> get() = _pictures
 
     fun validateRegisterExp(
         department: String, touristName: String,
@@ -58,12 +62,20 @@ class ShareViewModel(
         if (permissionChecker.checkPermission(PermissionsChecker.Permissions.READ_EXTERNAL_STORAGE)
             and permissionChecker.checkPermission(PermissionsChecker.Permissions.WRITE_EXTERNAL_STORAGE)
         ) {
-            launch {
-                _takePicture.postValue(true)
-            }
+            _takePicture.postValue(Event(true))
         } else {
-            _permission.value = RequestPermission.RequestStorage
+            _permission.postValue(RequestPermission.RequestStorage)
         }
+    }
+
+    fun savePictureInMemory(item: Picture) {
+        _pictures.value?.add(item)
+        _pictures.value = _pictures.value
+    }
+
+    fun deletePictureOfMemory(item: Picture) {
+        _pictures.value?.remove(item)
+        _pictures.value = _pictures.value
     }
 
     private fun shareExp(

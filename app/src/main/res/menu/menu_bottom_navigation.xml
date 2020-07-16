@@ -3,13 +3,16 @@
     <item
         android:id="@+id/itemHome"
         android:checked="true"
+        android:icon="@drawable/svg_ic_home"
         android:title="@string/item_home" />
 
     <item
         android:id="@+id/itemFavorites"
+        android:icon="@drawable/svg_ic_share"
         android:title="@string/item_share" />
 
     <item
         android:id="@+id/itemExtra"
+        android:icon="@drawable/svg_ic_home"
         android:title="@string/item_profile" />
 </menu>

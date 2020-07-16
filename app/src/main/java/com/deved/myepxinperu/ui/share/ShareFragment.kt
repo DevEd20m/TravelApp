@@ -13,18 +13,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.deved.myepxinperu.databinding.FragmentShareBinding
-import com.deved.myepxinperu.ui.common.PermissionRequester
-import com.deved.myepxinperu.ui.common.RequestPermission
-import com.deved.myepxinperu.ui.common.UserSingleton
-import com.deved.myepxinperu.ui.common.toast
+import com.deved.myepxinperu.ui.common.*
 import com.deved.myepxinperu.ui.model.Picture
+import org.koin.android.scope.currentScope
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 
 class ShareFragment : Fragment() {
     private lateinit var binding: FragmentShareBinding
     private val viewModel: ShareViewModel by lifecycleScope.viewModel(this)
-    private lateinit var picturesArray: MutableList<Picture>
     private val adapter by lazy { ShareAdapter(getListener()) }
     private lateinit var requestManager: PermissionRequester
 
@@ -47,7 +44,6 @@ class ShareFragment : Fragment() {
     private fun setUpRecyclerView() {
         binding.recyclerViewPictures.layoutManager = GridLayoutManager(activity, 2)
         binding.recyclerViewPictures.adapter = adapter
-        picturesArray = mutableListOf()
     }
 
     private fun setUpViewModelObserver() {
@@ -56,27 +52,28 @@ class ShareFragment : Fragment() {
         viewModel.onMessageSuccess.observe(viewLifecycleOwner, onMessageSuccessObserver)
         viewModel.permission.observe(viewLifecycleOwner, permissionObserver)
         viewModel.takePicture.observe(viewLifecycleOwner, takePictureObserver)
+        viewModel.pictures.observe(viewLifecycleOwner, picturesObserver)
     }
 
     private fun setUpEvents() {
-        binding.materialButtonShareExp.setOnClickListener {
-            val department = binding.textInputEditDepartment.text?.trim().toString()
-            val touristName = binding.textInputEditTextNameTourist.text?.trim().toString()
-            val touristDescription =
-                binding.textInputEditTextTouristDescription.text?.trim().toString()
-
-            val one = picturesArray[0]
-            val second = picturesArray[1]
-            val userId = UserSingleton.getUid()
-            viewModel.validateRegisterExp(
-                department,
-                touristName,
-                touristDescription,
-                one.picture.toString(),
-                second.picture.toString(),
-                userId
-            )
-        }
+//        binding.materialButtonShareExp.setOnClickListener {
+//            val department = binding.textInputEditDepartment.text?.trim().toString()
+//            val touristName = binding.textInputEditTextNameTourist.text?.trim().toString()
+//            val touristDescription =
+//                binding.textInputEditTextTouristDescription.text?.trim().toString()
+//
+////            val one = picturesArray[0]
+////            val second = picturesArray[1]
+//            val userId = UserSingleton.getUid()
+//            viewModel.validateRegisterExp(
+//                department,
+//                touristName,
+//                touristDescription,
+//                one.picture.toString(),
+//                second.picture.toString(),
+//                userId
+//            )
+//        }
 
         binding.imageButtonAdd.setOnClickListener {
             viewModel.getPicture()
@@ -90,8 +87,7 @@ class ShareFragment : Fragment() {
     }
 
     private fun deletePicture(item: Picture) {
-        picturesArray.remove(item)
-        adapter.setData(picturesArray)
+        viewModel.deletePictureOfMemory(item)
     }
 
     private val isViewLoadingObserver = Observer<Boolean> {
@@ -106,8 +102,12 @@ class ShareFragment : Fragment() {
         activity?.toast(it.toString())
     }
 
-    private val takePictureObserver = Observer<Boolean> {
-        fetchPicture()
+    private val takePictureObserver = Observer<Event<Boolean>> {
+        it?.let {
+            it.getContentIfNotHandled()?.let {
+                fetchPicture()
+            }
+        }
     }
 
     private val permissionObserver = Observer<RequestPermission> {
@@ -116,6 +116,12 @@ class ShareFragment : Fragment() {
                 requestManager.request(READ_EXTERNAL_STORAGE, ::handleGarantedPermission)
                 requestManager.request(WRITE_EXTERNAL_STORAGE, ::handleGarantedPermission)
             }
+        }
+    }
+
+    private val picturesObserver = Observer<MutableList<Picture>> {
+        it?.let {
+            adapter.setData(it)
         }
     }
 
@@ -132,8 +138,7 @@ class ShareFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 1) {
-            picturesArray.add(Picture(data?.data, "Imagen2", "Descripción2"))
-            adapter.setData(picturesArray)
+            viewModel.savePictureInMemory(Picture(data?.data, "Imagen2", "Descripción2"))
         }
     }
 
