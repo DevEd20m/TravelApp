@@ -81,12 +81,8 @@ class ShareFragment : Fragment() {
 
     private fun getListener(): (Picture) -> Unit {
         return {
-            deletePicture(it)
+            viewModel.deletePictureOfMemory(it)
         }
-    }
-
-    private fun deletePicture(item: Picture) {
-        viewModel.deletePictureOfMemory(item)
     }
 
     private val isViewLoadingObserver = Observer<Boolean> {

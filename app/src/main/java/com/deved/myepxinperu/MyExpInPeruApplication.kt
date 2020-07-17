@@ -24,7 +24,7 @@ class MyExpInPeruApplication : Application() {
         runProcess()
     }
 
-    fun runProcess() {
+    private fun runProcess() {
         applicationScope.launch {
             if (UserSingleton.getUid() != null) {
                 Log.d("TAG", "Proceso en ejecución")
