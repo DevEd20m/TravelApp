@@ -37,7 +37,7 @@ Bienvenido 👋, espero que este repositorio te sea de mucha ayuda para comprend
 
 ## Arquitectura
 
-La aquitectura del proyecto sigue los principios de la Arquitecura Limpia y así como los Principios Sólidos.
+La arquitectura del proyecto sigue los principios de la Arquitectura Limpia y así como los Principios Sólidos.
 Las capas están modularizadas de la siguiente manera:
 
 ### App - Presentación - Framework
