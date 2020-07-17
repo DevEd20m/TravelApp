@@ -1,6 +1,5 @@
 package com.deved.myepxinperu.ui.detail
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +21,7 @@ class DetailFragment : Fragment() {
     private lateinit var binding: FragmentDetailBinding
     private var departmentName: String? = null
     private var placeName: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         departmentName = arguments?.getString(mDepartmentName, "")
@@ -39,12 +39,25 @@ class DetailFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        events()
+    }
+
+    private fun events() {
+        with(binding) {
+            toolbarDetail.setNavigationOnClickListener {
+                activity?.supportFragmentManager?.popBackStack()
+            }
+        }
+    }
+
     private fun setUpViewModelObservers() {
-        viewmodel.isViewLoading.observe(this, isViewLoadingObserver)
-        viewmodel.onErrorMessage.observe(this, onErrorMessageObserver)
-        viewmodel.onSuccessMessage.observe(this, onSuccessMessageObserver)
-        viewmodel.place.observe(this, placeObserver)
-        viewmodel.userPosted.observe(this, userPostedObserver)
+        viewmodel.isViewLoading.observe(viewLifecycleOwner, isViewLoadingObserver)
+        viewmodel.onErrorMessage.observe(viewLifecycleOwner, onErrorMessageObserver)
+        viewmodel.onSuccessMessage.observe(viewLifecycleOwner, onSuccessMessageObserver)
+        viewmodel.place.observe(viewLifecycleOwner, placeObserver)
+        viewmodel.userPosted.observe(viewLifecycleOwner, userPostedObserver)
     }
 
     private val isViewLoadingObserver = Observer<Boolean> {
@@ -76,7 +89,6 @@ class DetailFragment : Fragment() {
 
     private fun setUpToolbar(tit: String?) {
         binding.toolbarDetail.setTitle(tit)
-        binding.toolbarDetail.setTitleTextColor(Color.WHITE)
     }
 
     companion object {

@@ -6,90 +6,114 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/ConstraintLayoutTheme"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingHorizontal="16dp"
         tools:context=".ui.share.ShareFragment">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutDepartment"
-            style="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+
+        <TextView
+            android:id="@+id/textViewTitleFragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="Compartir Experiencias"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutInputs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="3dp"
             android:layout_marginTop="16dp"
-            android:hint="Nombre del Departamento"
-            app:endIconMode="clear_text"
-            app:helperText="Ingrese el departamento"
-            app:helperTextEnabled="true"
+            android:background="@drawable/shape_constraint_layout_corner"
+            android:elevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitleFragment">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditDepartment"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutDepartment"
+                style="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="Nombre del Departamento"
+                app:endIconMode="clear_text"
+                app:helperText="Ingrese el departamento"
+                app:helperTextEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutNameTourist"
-            style="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Nombre del Atractivo Turisctico"
-            app:endIconMode="clear_text"
-            app:helperText="Ingrese el nombre del atractivo turistico"
-            app:helperTextEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textInputLayoutDepartment">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditDepartment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditTextNameTourist"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutNameTourist"
+                style="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="10dp"
+                android:hint="Nombre del Atractivo Turisctico"
+                app:endIconMode="clear_text"
+                app:helperText="Ingrese el nombre del atractivo turistico"
+                app:helperTextEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textInputLayoutDepartment">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutTouristDescription"
-            style="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Descripción turistica"
-            app:endIconMode="clear_text"
-            app:helperText="Ingrese una descripción para el atractivo turistico"
-            app:helperTextEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textInputLayoutNameTourist"
-            app:layout_constraintVertical_bias="0.2">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextNameTourist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditTextTouristDescription"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutTouristDescription"
+                style="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionDone"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="10dp"
+                android:hint="Descripción turistica"
+                app:endIconMode="clear_text"
+                app:helperText="Ingrese una descripción para el atractivo turistico"
+                app:helperTextEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textInputLayoutNameTourist"
+                app:layout_constraintVertical_bias="0.2">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextTouristDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <TextView
             android:id="@+id/textViewTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:text="Sube tus experiencias"
             android:textColor="@color/colorNegro"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textInputLayoutTouristDescription" />
+            app:layout_constraintTop_toBottomOf="@id/constraintLayoutInputs" />
 
         <ImageButton
             android:id="@+id/imageButtonAdd"
@@ -105,7 +129,11 @@
             android:id="@+id/recyclerViewPictures"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:layout_marginHorizontal="3dp"
             android:layout_marginTop="16dp"
+            android:background="@color/colorWhite"
+            android:elevation="2dp"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
@@ -113,9 +141,9 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/materialButtonShareExp"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            style="@style/MaterialButtonTheme"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="16dp"
             android:fitsSystemWindows="true"
