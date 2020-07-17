@@ -26,46 +26,37 @@ class ShareViewModel(
 ) : ScopeViewModel() {
     private var _isViewLoading = MutableLiveData<Boolean>()
     val isViewLoading: LiveData<Boolean> get() = _isViewLoading
-    private var _onMessageError = MutableLiveData<Any>()
-    val onMessageError: LiveData<Any> get() = _onMessageError
-    private var _onMessageSuccess = MutableLiveData<Any>()
-    val onMessageSuccess: LiveData<Any> get() = _onMessageSuccess
+    private var _onMessageError = MutableLiveData<Event<Any>>()
+    val onMessageError: LiveData<Event<Any>> get() = _onMessageError
+    private var _onMessageSuccess = MutableLiveData<Event<Any>>()
+    val onMessageSuccess: LiveData<Event<Any>> get() = _onMessageSuccess
     private var _permission = MutableLiveData<RequestPermission>()
     val permission: LiveData<RequestPermission> get() = _permission
     private var _takePicture = MutableLiveData<Event<Boolean>>()
     val takePicture: LiveData<Event<Boolean>> get() = _takePicture
-    private  var _pictures = MutableLiveData<MutableList<Picture>>().apply { value = mutableListOf() }
+    private var _pictures =
+        MutableLiveData<MutableList<Picture>>().apply { value = mutableListOf() }
     val pictures: LiveData<MutableList<Picture>> get() = _pictures
 
     fun validateRegisterExp(
         department: String, touristName: String,
-        touristDescription: String,
-        pictureOne: String, pictureSecond: String, userId: String
+        touristDescription: String, userId: String,
+        pictures: List<Picture>
     ) {
-        if (!department.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDeparment))
-        else if (!touristName.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputTouristName))
-        else if (!touristDescription.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputDescription))
-        else if (!pictureOne.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureOne))
-        else if (!pictureSecond.validate()) _onMessageError.postValue(UiContext.getString(R.string.invalidInputPictureSecond))
+        if (!department.validate()) _onMessageError.postValue(Event(UiContext.getString(R.string.invalidInputDeparment)))
+        else if (!touristName.validate()) _onMessageError.postValue(Event(UiContext.getString(R.string.invalidInputTouristName)))
+        else if (!touristDescription.validate()) _onMessageError.postValue(Event(UiContext.getString(R.string.invalidInputDescription)))
+        else if (pictures.isEmpty()) _onMessageError.postValue(Event(UiContext.getString(R.string.invalidInputPictureOne)))
+        else if (pictures.size < 2) _onMessageError.postValue(Event(UiContext.getString(R.string.invalidSizePictures)))
         else shareExp(
             department,
             touristName,
             touristDescription,
-            pictureOne,
-            pictureSecond,
+            pictures[0].picture.toString(),
+            pictures[1].picture.toString(),
             "",
             userId
         )
-    }
-
-    fun getPicture() {
-        if (permissionChecker.checkPermission(PermissionsChecker.Permissions.READ_EXTERNAL_STORAGE)
-            and permissionChecker.checkPermission(PermissionsChecker.Permissions.WRITE_EXTERNAL_STORAGE)
-        ) {
-            _takePicture.postValue(Event(true))
-        } else {
-            _permission.postValue(RequestPermission.RequestStorage)
-        }
     }
 
     fun savePictureInMemory(item: Picture) {
@@ -76,6 +67,23 @@ class ShareViewModel(
     fun deletePictureOfMemory(item: Picture) {
         _pictures.value?.remove(item)
         _pictures.value = _pictures.value
+    }
+
+
+    fun getPicture() {
+        if (validatePermission()) {
+            if (validateSizePictures(pictures.value!!)) _takePicture.postValue(Event(true))
+            else _onMessageError.postValue(Event(UiContext.getString(R.string.numberOfSizePictureIsExced)))
+        } else _permission.postValue(RequestPermission.RequestStorage)
+    }
+
+    private fun validatePermission(): Boolean {
+        return (permissionChecker.checkPermission(PermissionsChecker.Permissions.READ_EXTERNAL_STORAGE)
+                and permissionChecker.checkPermission(PermissionsChecker.Permissions.WRITE_EXTERNAL_STORAGE))
+    }
+
+    private fun validateSizePictures(pictures: List<Picture>): Boolean {
+        return pictures.size in 0..1
     }
 
     private fun shareExp(
@@ -107,21 +115,21 @@ class ShareViewModel(
 
     private fun doAction(invoke: DataResponse<String>) {
         when (invoke) {
-            is DataResponse.Success -> _onMessageSuccess.postValue(UiContext.getString(R.string.success_registered_shared))
-            is DataResponse.NetworkError -> _onMessageError.postValue(invoke.error)
-            is DataResponse.TimeOutServerError -> _onMessageError.postValue(invoke.error)
-            is DataResponse.ExceptionError -> _onMessageError.postValue(invoke.errorCode.message)
-            is DataResponse.ServerError -> _onMessageError.postValue(invoke.errorCode)
+            is DataResponse.Success -> _onMessageSuccess.postValue(Event(UiContext.getString(R.string.success_registered_shared)))
+            is DataResponse.NetworkError -> _onMessageError.postValue(Event(invoke.error))
+            is DataResponse.TimeOutServerError -> _onMessageError.postValue(Event(invoke.error))
+            is DataResponse.ExceptionError -> _onMessageError.postValue(Event(invoke.errorCode.message.toString()))
+            is DataResponse.ServerError -> _onMessageError.postValue(Event(invoke.errorCode))
         }
     }
 
     private fun uploadDoAction(invoke: DataResponse<String>): Any? {
         return when (invoke) {
             is DataResponse.Success -> invoke.data
-            is DataResponse.NetworkError -> _onMessageError.postValue(invoke.error)
-            is DataResponse.TimeOutServerError -> _onMessageError.postValue(invoke.error)
-            is DataResponse.ExceptionError -> _onMessageError.postValue(invoke.errorCode.message)
-            is DataResponse.ServerError -> _onMessageError.postValue(invoke.errorCode)
+            is DataResponse.NetworkError -> _onMessageError.postValue(Event(invoke.error))
+            is DataResponse.TimeOutServerError -> _onMessageError.postValue(Event(invoke.error))
+            is DataResponse.ExceptionError -> _onMessageError.postValue(Event(invoke.errorCode.message.toString()))
+            is DataResponse.ServerError -> _onMessageError.postValue(Event(invoke.errorCode))
         }
     }
 }

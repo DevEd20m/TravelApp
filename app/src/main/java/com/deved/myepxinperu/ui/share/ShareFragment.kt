@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.deved.myepxinperu.databinding.FragmentShareBinding
 import com.deved.myepxinperu.ui.common.*
 import com.deved.myepxinperu.ui.model.Picture
-import org.koin.android.scope.currentScope
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 
@@ -48,35 +47,35 @@ class ShareFragment : Fragment() {
 
     private fun setUpViewModelObserver() {
         viewModel.isViewLoading.observe(viewLifecycleOwner, isViewLoadingObserver)
-        viewModel.onMessageError.observe(viewLifecycleOwner, onMessageErrorObserver)
-        viewModel.onMessageSuccess.observe(viewLifecycleOwner, onMessageSuccessObserver)
+        viewModel.onMessageError.observe(viewLifecycleOwner, EventObserver(::showMessage))
+        viewModel.onMessageSuccess.observe(viewLifecycleOwner, EventObserver(::showMessage))
         viewModel.permission.observe(viewLifecycleOwner, permissionObserver)
         viewModel.takePicture.observe(viewLifecycleOwner, takePictureObserver)
         viewModel.pictures.observe(viewLifecycleOwner, picturesObserver)
     }
 
     private fun setUpEvents() {
-//        binding.materialButtonShareExp.setOnClickListener {
-//            val department = binding.textInputEditDepartment.text?.trim().toString()
-//            val touristName = binding.textInputEditTextNameTourist.text?.trim().toString()
-//            val touristDescription =
-//                binding.textInputEditTextTouristDescription.text?.trim().toString()
-//
-////            val one = picturesArray[0]
-////            val second = picturesArray[1]
-//            val userId = UserSingleton.getUid()
-//            viewModel.validateRegisterExp(
-//                department,
-//                touristName,
-//                touristDescription,
-//                one.picture.toString(),
-//                second.picture.toString(),
-//                userId
-//            )
-//        }
+        with(binding) {
+            materialButtonShareExp.setOnClickListener {
+                val department = textInputEditDepartment.text?.trim().toString()
+                val touristName = textInputEditTextNameTourist.text?.trim().toString()
+                val touristDescription =
+                    textInputEditTextTouristDescription.text?.trim().toString()
 
-        binding.imageButtonAdd.setOnClickListener {
-            viewModel.getPicture()
+                val pictures = viewModel.pictures.value.orEmpty()
+                val userId = UserSingleton.getUid()
+                viewModel.validateRegisterExp(
+                    department,
+                    touristName,
+                    touristDescription,
+                    userId,
+                    pictures
+                )
+            }
+
+            imageButtonAdd.setOnClickListener {
+                viewModel.getPicture()
+            }
         }
     }
 
@@ -94,14 +93,6 @@ class ShareFragment : Fragment() {
         binding.progressBarShareExp.isVisible = it
     }
 
-    private val onMessageErrorObserver = Observer<Any> {
-        activity?.toast(it.toString())
-    }
-
-    private val onMessageSuccessObserver = Observer<Any> {
-        activity?.toast(it.toString())
-    }
-
     private val takePictureObserver = Observer<Event<Boolean>> {
         it?.let {
             it.getContentIfNotHandled()?.let {
@@ -113,8 +104,8 @@ class ShareFragment : Fragment() {
     private val permissionObserver = Observer<RequestPermission> {
         when (it) {
             is RequestPermission.RequestStorage -> {
-                requestManager.request(READ_EXTERNAL_STORAGE, ::handleGarantedPermission)
-                requestManager.request(WRITE_EXTERNAL_STORAGE, ::handleGarantedPermission)
+                requestManager.request(READ_EXTERNAL_STORAGE, ::handleGrantedPermission)
+                requestManager.request(WRITE_EXTERNAL_STORAGE, ::handleGrantedPermission)
             }
         }
     }
@@ -125,8 +116,12 @@ class ShareFragment : Fragment() {
         }
     }
 
-    private fun handleGarantedPermission(granted: Boolean) {
+    private fun handleGrantedPermission(granted: Boolean) {
         if (granted) viewModel.getPicture()
+    }
+
+    private fun showMessage(it: Any) {
+        activity?.toast(it.toString())
     }
 
     private fun fetchPicture() {

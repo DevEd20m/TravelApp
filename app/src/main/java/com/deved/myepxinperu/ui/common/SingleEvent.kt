@@ -1,6 +1,8 @@
 package com.deved.myepxinperu.ui.common
 
-open class Event<out T>(private val content: T) {
+import androidx.lifecycle.Observer
+
+open class Event<out T>(private val content: T?) {
 
     var hasBeenHandled = false
         private set // Allow external read but not write
@@ -14,5 +16,11 @@ open class Event<out T>(private val content: T) {
         }
     }
 
-    fun peekContent(): T = content
+    fun peekContent(): T? = content
+}
+
+class EventObserver<T>(private val onEventUnhandledContent: (T) -> Unit) : Observer<Event<T>> {
+    override fun onChanged(event: Event<T>?) {
+        event?.getContentIfNotHandled()?.let(onEventUnhandledContent)
+    }
 }

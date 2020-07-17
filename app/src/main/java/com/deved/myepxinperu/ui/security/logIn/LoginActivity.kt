@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.deved.domain.User
 import com.deved.myepxinperu.databinding.ActivityLoginBinding
+import com.deved.myepxinperu.ui.common.EventObserver
 import com.deved.myepxinperu.ui.common.UserSingleton
 import com.deved.myepxinperu.ui.common.gonnaToClass
 import com.deved.myepxinperu.ui.common.toast
@@ -45,22 +46,22 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setUpViewModelObservers() {
         viewModel.isViewLoading.observe(this, isViewLoadingObserver)
-        viewModel.onMessageError.observe(this, onMessageErrorObserver)
-        viewModel.onMessageSuccess.observe(this, onMessageSuccessObserver)
+        viewModel.onMessageError.observe(this, EventObserver(::showErrorMessage))
+        viewModel.onMessageSuccess.observe(this, EventObserver(::gonnaToMainActivity))
+    }
+
+    private fun showErrorMessage(it: Any) {
+        toast(it.toString())
+    }
+
+    private fun gonnaToMainActivity(user: User) {
+        UserSingleton.setUid(user.id)
+        UserSingleton.setEmail(user.email)
+        gonnaToClass(MainActivity::class.java)
     }
 
     private val isViewLoadingObserver = Observer<Boolean> {
         binding.progressBarLogIn.isVisible = it
-    }
-
-    private val onMessageErrorObserver = Observer<Any> {
-        toast(it.toString())
-    }
-
-    private val onMessageSuccessObserver = Observer<User> {
-        UserSingleton.setUid(it.id)
-        UserSingleton.setEmail(it.email)
-        gonnaToClass(MainActivity::class.java)
     }
 
 }
