@@ -4,6 +4,10 @@ _Esta aplicación es un ejemplo donde podemos registrarnos con una cuenta propia
 
 Bienvenido 👋, espero que este repositorio te sea de mucha ayuda para comprender acerca de la Arquitectura Limpia y el uso de Principios Sólidos.
 
+## ¡Capturas de Pantalla!
+<img src="https://firebasestorage.googleapis.com/v0/b/myexpinperu.appspot.com/o/ImagenesGithub%2FlogIn.png?alt=media&token=49a90f78-c9d5-44c3-a4ab-ee02f680d3c5" width="300" height="500" /> <img src="https://firebasestorage.googleapis.com/v0/b/myexpinperu.appspot.com/o/ImagenesGithub%2FregisterUser.png?alt=media&token=cae04eda-b52e-4b2b-91e9-26ec5061e9c3" width="300" height="500" /> <img src="https://firebasestorage.googleapis.com/v0/b/myexpinperu.appspot.com/o/ImagenesGithub%2Fhome.png?alt=media&token=555c5f6e-915b-414c-9a83-d61ed71eb22a" width="300" height="500" />  <img src="https://firebasestorage.googleapis.com/v0/b/myexpinperu.appspot.com/o/ImagenesGithub%2FdetailPlace.png?alt=media&token=14ddb71f-cc71-4360-a2ce-0efe1279680d" width="300" height="500" />  <img src="https://firebasestorage.googleapis.com/v0/b/myexpinperu.appspot.com/o/ImagenesGithub%2Fshare.png?alt=media&token=dcaf9ce7-e0e4-4eeb-bb40-78ceff7416ad" width="300" height="500" />
+
+
 
 ## ¡Razones por las que deberías de darte un tiempo en revisarlo!
 
