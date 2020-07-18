@@ -25,4 +25,5 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <string name="string_place_similated">"Lugares turisticos cerca de "</string>
     <string name="invalidSizePictures">Ingrese 2 fotos por favor</string>
     <string name="numberOfSizePictureIsExced">Solo se pueden subir 2 fotos</string>
+    <string name="string_exit_app">Cerrar Sesión</string>
 </resources>

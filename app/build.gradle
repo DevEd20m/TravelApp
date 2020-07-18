@@ -57,6 +57,7 @@ dependencies {
     implementation coil.values()
     implementation firebase.values()
     implementation room.values()
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt roomCompiler.values()
     testImplementation test.values()
     androidTestImplementation testImplementation.values()

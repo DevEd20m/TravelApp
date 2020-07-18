@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.deved.myepxinperu.R
 import com.deved.myepxinperu.databinding.ActivityRegisterBinding
+import com.deved.myepxinperu.ui.common.gonnaToClass
 import com.deved.myepxinperu.ui.common.toast
 import com.deved.myepxinperu.ui.security.logIn.LoginActivity
 import org.koin.android.scope.lifecycleScope
@@ -49,12 +50,15 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     private val onMessageSuccessObserver = Observer<Any> {
         toast(it.toString())
         Thread.sleep(TIME_SLEEP)
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
+        gonnaToClass(LoginActivity::class.java)
     }
 
     private val isViewLoadingObserver = Observer<Boolean> {
         binding.progressBarRegister.isVisible = it
+    }
+
+    override fun onBackPressed() {
+        gonnaToClass(LoginActivity::class.java)
     }
 
     companion object {

@@ -111,7 +111,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/materialButtonLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewRegister" />
+        app:layout_constraintTop_toBottomOf="@id/constraintLayoutInputs" />
 </androidx.constraintlayout.widget.ConstraintLayout>
